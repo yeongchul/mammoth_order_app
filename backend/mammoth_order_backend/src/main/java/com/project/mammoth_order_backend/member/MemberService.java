@@ -3,6 +3,8 @@ package com.project.mammoth_order_backend.member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @RequiredArgsConstructor
 @Service
 public class MemberService {
@@ -22,5 +24,14 @@ public class MemberService {
                 .build();
 
         memberRepository.save(member);
+    }
+
+    public boolean login(LoginDto loginDto) {
+        Optional<MemberEntity> findMember = memberRepository.findByUid(loginDto.getUid());
+        if (findMember.isPresent() && findMember.get().getPassword().equals(loginDto.getPassword())) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
