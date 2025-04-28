@@ -5,6 +5,6 @@ export interface MenuItem {
 }
 
 export interface ModalProps {
-  isModalOpen: boolean;
-  onClose: () => void;
+  isOpen: boolean;
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }

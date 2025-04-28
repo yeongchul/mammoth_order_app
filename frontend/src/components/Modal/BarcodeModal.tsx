@@ -1,11 +1,11 @@
 import { ModalProps } from "../../types/common";
 
-export default function BarcodeModal({ isModalOpen, onClose }: ModalProps) {
+export default function BarcodeModal({ isOpen, setIsOpen }: ModalProps) {
   return (
     isOpen && (
       <dialog open className="modal">
         <button
-          onClick={onClose}
+          onClick={() => setIsOpen(false)}
           className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
         >
           ✕

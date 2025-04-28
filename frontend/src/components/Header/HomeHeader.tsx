@@ -4,14 +4,6 @@ import { useState } from "react";
 export default function HomeHeader() {
   const [isModalOpen, setisModalOpen] = useState(false);
 
-  const openModal = () => {
-    setisModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setisModalOpen(false);
-  };
-
   return (
     <div className="navbar bg-base-100 p-0">
       <div className="navbar-start">
@@ -35,7 +27,7 @@ export default function HomeHeader() {
       </div>
       <div className="navbar-end">
         <button
-          onClick={openModal}
+          onClick={() => setisModalOpen(true)}
           className="btn btn-ghost btn-circle btn-disabled"
         >
           <img
@@ -52,7 +44,7 @@ export default function HomeHeader() {
           />
         </button>
       </div>
-      <BarcodeModal isModalOpen={isModalOpen} onClose={closeModal} />
+      <BarcodeModal isOpen={isModalOpen} setIsOpen={setisModalOpen} />
     </div>
   );
 }
