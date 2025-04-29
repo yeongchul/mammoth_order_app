@@ -19,7 +19,7 @@ bin/
 
 ### IntelliJ IDEA ###
 application-local.properties
-application-oauth.yml
+application.yml
 .idea
 *.iws
 *.iml
