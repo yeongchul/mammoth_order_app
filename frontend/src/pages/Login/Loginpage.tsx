@@ -1,3 +1,5 @@
+import KakaoLogin from "../../components/KakaoLogin/KakaoLogin";
+
 export default function Loginpage() {
   return (
     <>
@@ -10,13 +12,7 @@ export default function Loginpage() {
             filter: "brightness(0) invert(1)",
           }}
         />
-        <div
-          role="button"
-          className="flex bg-yellow-400 w-[85%] h-[8%] rounded-md mt-[30%]
-         justify-center items-center flex-row font-extrabold"
-        >
-          카카오 로그인
-        </div>
+        <KakaoLogin />
         <div
           role="button"
           className="flex bg-white w-[85%] h-[8%] rounded-md mt-5
