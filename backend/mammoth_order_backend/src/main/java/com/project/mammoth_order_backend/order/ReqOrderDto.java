@@ -1,4 +1,4 @@
-package com.project.mammoth_order_backend.member;
+package com.project.mammoth_order_backend.order;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,8 +9,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class JoinDto {
-    private String uid;
-    private String password;
+public class ReqOrderDto {
     private String name;
+    private Integer price;
 }
