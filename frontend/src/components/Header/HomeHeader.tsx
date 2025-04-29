@@ -1,5 +1,7 @@
 import BarcodeModal from "../Modal/BarcodeModal";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 
 export default function HomeHeader() {
   const [isModalOpen, setisModalOpen] = useState(false);
@@ -7,7 +9,7 @@ export default function HomeHeader() {
   return (
     <div className="navbar bg-base-100 p-0">
       <div className="navbar-start">
-        <div role="button" className="btn btn-ghost btn-disabled p-2">
+        <div role="button" className="p-2">
           <img
             src="src/assets/icon_menu.png"
             alt="Menu Icon"
@@ -26,21 +28,18 @@ export default function HomeHeader() {
         />
       </div>
       <div className="navbar-end">
-        <button
-          onClick={() => setisModalOpen(true)}
-          className="btn btn-ghost btn-circle btn-disabled"
-        >
+        <button onClick={() => setisModalOpen(true)} className="p-2">
           <img
             src="src/assets/icon_barcode.png"
             alt="Barcode Icon"
             className="h-7 w-6 rounded-lg"
           />
         </button>
-        <button className="btn btn-ghost btn-circle btn-disabled">
+        <button className="p-2">
           <img
             src="src/assets/icon_notification.png"
             alt="Menu Icon"
-            className="h-5 w-5 mr-1"
+            className="h-5 w-5"
           />
         </button>
       </div>
