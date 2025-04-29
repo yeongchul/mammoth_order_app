@@ -1,4 +1,4 @@
-package com.project.mammoth_order_backend.order;
+package com.project.mammoth_order_backend.order.domain;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
