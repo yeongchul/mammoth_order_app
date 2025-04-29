@@ -1,17 +1,28 @@
 import BarcodeModal from "../Modal/BarcodeModal";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
+import Menupage from "../../pages/Menu/Menupage";
+import Alarmpage from "../../pages/Alarm/Alarmpage";
 
 export default function HomeHeader() {
-  const [isModalOpen, setisModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isAlarmOpen, setIsAlarmOpen] = useState(false);
+
+  // const closeMenu = () => {
+  //   setIsMenuOpen(false);
+  // };
+
+  // const closeAlarm = () => {
+  //   setIsAlarmOpen(false);
+  // };
 
   return (
     <div className="navbar bg-base-100 p-0">
       <div className="navbar-start">
-        <div role="button" className="p-2">
+        <div role="button" className="p-2" onClick={() => setIsMenuOpen(true)}>
           <img
-            src="src/assets/icon_menu.png"
+            src="src/assets/icon/icon_menu.png"
             alt="Menu Icon"
             className="h-6 w-6"
           />
@@ -19,7 +30,7 @@ export default function HomeHeader() {
       </div>
       <div className="navbar-center">
         <img
-          src="src/assets/mammoth_text.png"
+          src="src/assets/logo/mammoth_text.png"
           alt="Mammoth Logo"
           className="w-[100%]"
           style={{
@@ -28,22 +39,26 @@ export default function HomeHeader() {
         />
       </div>
       <div className="navbar-end">
-        <button onClick={() => setisModalOpen(true)} className="p-2">
+        <button onClick={() => setIsModalOpen(true)} className="p-2">
           <img
-            src="src/assets/icon_barcode.png"
+            src="src/assets/icon/icon_barcode.png"
             alt="Barcode Icon"
             className="h-7 w-6 rounded-lg"
           />
         </button>
-        <button className="p-2">
+        <button className="p-2" onClick={() => setIsAlarmOpen(true)}>
           <img
-            src="src/assets/icon_notification.png"
+            src="src/assets/icon/icon_notification.png"
             alt="Menu Icon"
             className="h-5 w-5"
           />
         </button>
       </div>
-      <BarcodeModal isOpen={isModalOpen} setIsOpen={setisModalOpen} />
+      <AnimatePresence>
+        {isModalOpen && <BarcodeModal onClose={() => setIsModalOpen(false)} />}
+        {isMenuOpen && <Menupage onClose={() => setIsMenuOpen(false)} />}
+        {isAlarmOpen && <Alarmpage onClose={() => setIsAlarmOpen(false)} />}
+      </AnimatePresence>
     </div>
   );
 }
