@@ -18,7 +18,7 @@ export default function RecommendBox() {
     {
       imgSrc:
         "https://img.daisyui.com/images/stock/photo-1572635148818-ef6fd45eb394.webp",
-      name: "버거 3",
+      name: "커피 3",
       price: 4500,
     },
     {
@@ -50,13 +50,15 @@ export default function RecommendBox() {
     <div className="pl-4 pt-1 pr-4 pb-4">
       <div className="flex justify-between items-center">
         <p className="font-bold text-md">이달의 추천 메뉴</p>
-        <p className="font-semibold text-xs text-gray-500">더보기</p>
+        <p role="button" className="font-semibold text-xs text-gray-500">
+          더보기
+        </p>
       </div>
-      <div className="mt-4 pt-4 pb-4 bg-white w-full h-60 shadow-sm rounded-md carousel">
+      <div className="carousel overflow-x-auto mt-4 pt-4 pb-4 bg-white w-full h-60 shadow-sm rounded-md">
         {menuItems.map((items, index) => (
           <div
             key={index}
-            className="flex flex-col carousel-item pl-2 pr-2 items-center"
+            className="carousel-item flex flex-col pl-2 pr-2 items-center"
           >
             <img src={items.imgSrc} alt={items.name} className="w-28 h-28" />
             <p className="mt-3 text-xs">{items.name}</p>
