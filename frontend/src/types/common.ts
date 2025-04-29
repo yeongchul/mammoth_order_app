@@ -11,6 +11,11 @@ export interface OrderLog {
   orderdate: Date;
 }
 
+export interface CafeList {
+  name: string;
+  address: string;
+}
+
 export interface User {
   id: number;
   name: string;
@@ -27,3 +32,18 @@ export interface AuthResponse {
 export interface IsClose {
   onClose: () => void;
 }
+
+export type CafelistProps = {
+  type: "nearby" | "my";
+};
+
+export type BeveragelistProps = {
+  type:
+    | "new"
+    | "coffe"
+    | "coldbrew"
+    | "noncoffe"
+    | "teaade"
+    | "frappe"
+    | "food";
+};
