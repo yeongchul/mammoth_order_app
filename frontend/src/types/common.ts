@@ -1,12 +1,14 @@
-export interface MenuItem {
+export interface BeverageItem {
   imgSrc: string;
   name: string;
   price: number;
 }
 
-export interface ModalProps {
-  isOpen: boolean;
-  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+export interface OrderLog {
+  beverage: string;
+  price: number;
+  point: number;
+  orderdate: Date;
 }
 
 export interface User {
@@ -20,4 +22,8 @@ export interface AuthResponse {
   token: string;
   refreshToken: string;
   user: User;
+}
+
+export interface IsClose {
+  onClose: () => void;
 }

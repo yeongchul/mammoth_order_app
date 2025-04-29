@@ -1,8 +1,8 @@
 //이달의 추천 메뉴 박스
-import { MenuItem } from "../../types/common";
+import { BeverageItem } from "../../types/common";
 
 export default function RecommendBox() {
-  const menuItems: MenuItem[] = [
+  const beverageItems: BeverageItem[] = [
     {
       imgSrc:
         "https://img.daisyui.com/images/stock/photo-1559703248-dcaaec9fab78.webp",
@@ -55,7 +55,7 @@ export default function RecommendBox() {
         </p>
       </div>
       <div className="carousel overflow-x-auto mt-4 pt-4 pb-4 bg-white w-full h-60 shadow-sm rounded-md">
-        {menuItems.map((items, index) => (
+        {beverageItems.map((items, index) => (
           <div
             key={index}
             className="carousel-item flex flex-col pl-2 pr-2 items-center"

@@ -12,7 +12,7 @@ export default function MyMenuBox() {
         <div className="flex flex-row w-full justify-center mt-3">
           <div className="p-0 bg-gray-400 w-3.5 h-3.5 rounded-full mt-1 mr-1">
             <img
-              src="src/assets/icon_add.png"
+              src="src/assets/icon/icon_add.png"
               alt="추가아이콘"
               style={{
                 filter: "invert(1)",
