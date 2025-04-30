@@ -1,25 +1,51 @@
 package com.project.mammoth_order_backend.order.controller;
 
-import com.project.mammoth_order_backend.auth.entity.User;
-import com.project.mammoth_order_backend.auth.repository.UserRepository;
-import com.project.mammoth_order_backend.order.domain.Menu;
-import com.project.mammoth_order_backend.order.domain.MenuRepository;
-import com.project.mammoth_order_backend.order.dto.CartItemDTO;
+import com.project.mammoth_order_backend.auth.security.CustomUserDetails;
+import com.project.mammoth_order_backend.order.dto.CartItemDto;
 import com.project.mammoth_order_backend.order.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/order")
 @RequiredArgsConstructor
 public class OrderController {
-    private final MenuRepository menuRepository;
+    private final OrderService orderService;
+
+    // 장바구니 보기
+    @GetMapping("/cart")
+    public ResponseEntity<List<CartItemDto>> getCart(@AuthenticationPrincipal CustomUserDetails userDetails) {
+        Long userId = userDetails.getId();
+        List<CartItemDto> cartItemDtoList = orderService.getCartItems(userId);
+        return ResponseEntity.ok(cartItemDtoList);
+    }
+
+    // 장바구니 저장
+    @PostMapping("/cart")
+    public ResponseEntity<String> addToCart(@RequestBody CartItemDto cartItemDto) {
+        orderService.addToCart(cartItemDto);
+        return ResponseEntity.ok("장바구니에 저장했습니다.");
+    }
+
+    // 장바구니 삭제
+    @DeleteMapping("/cart/{cartId}")
+    public ResponseEntity<String> removeFromCart(@PathVariable Long cartId) {
+        orderService.removeFromCart(cartId);
+        return ResponseEntity.ok("장바구니에서 삭제하였습니다.");
+    }
+
+    // 장바구니 구매
+    /*@PostMapping("/cart/purchase")
+    public ResponseEntity<String> purchaseCart(@RequestBody List<Long> cartId) {
+        orderService.purchaseCart(cartId);
+    }*/
+
+    // 바로 구매
+    /*
     private final OrderService orderService;
     private final UserRepository userRepository;
 
@@ -30,28 +56,6 @@ public class OrderController {
         return ResponseEntity.ok(menus);
     }
 
-    // 장바구니 저장
-    List<CartItemDTO> cart = new ArrayList<>();
-    @PostMapping("/cart")
-    public ResponseEntity<String> addCart(@RequestBody CartItemDTO cartItemDTO) {
-        cart.add(cartItemDTO);
-        return ResponseEntity.ok("장바구니에 저장");
-    }
-    
-    //장바구니 삭제
-    @PostMapping("/cart")
-    public ResponseEntity<String> delCart(@RequestBody CartItemDTO cartItemDTO) {
-        cart.add(cartItemDTO);
-        return ResponseEntity.ok("장바구니에 삭제");
-    }
-
-    // 장바구니 반환
-    @GetMapping("/cart/{userId}")
-    public ResponseEntity<List<CartItemDTO>> showCart(@PathVariable Long userId) {
-        List<CartItemDTO> userCart = cart.stream().filter(item -> item.getUserId().equals(userId)).collect(Collectors.toList());
-        return ResponseEntity.ok(cart);
-    }
-
     // 바로 구매
     @PostMapping("/buy") // 3% 포인트
     public ResponseEntity<String> buy(@RequestBody CartItemDTO cartItemDTO) {
@@ -60,5 +64,5 @@ public class OrderController {
         //point = point + (cartItemDTO.getProductPrice() * cartItemDTO.getProductQuantity()) * 0.03;
         //user.get().setPoint(point);
         return ResponseEntity.ok("구매 성공");
-    }
+    }*/
 }
