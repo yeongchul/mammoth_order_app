@@ -2,7 +2,11 @@
 export default {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        nanum: ['"Nanum Gothic"', "sans-serif"],
+      },
+    },
   },
-  plugins: [require("daisyui")],
+  plugins: [require("daisyui"), require("tailwind-scrollbar-hide")],
 };

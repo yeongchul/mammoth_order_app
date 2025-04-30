@@ -17,9 +17,7 @@ export default function Choosecafe({ onClose }: IsClose) {
         transition={{ duration: 0.3, ease: "easeInOut" }}
       >
         <div>
-          <div className="p-2">
-            <ChoosecafeHeader onClose={onClose} />
-          </div>
+          <ChoosecafeHeader onClose={onClose} />
           <div role="tablist" className="tabs tabs-border shadow-md pl-3">
             <a
               role="tab"
@@ -38,9 +36,9 @@ export default function Choosecafe({ onClose }: IsClose) {
           </div>
           <div>
             {activeTab === "nearby" ? (
-              <Cafelist type="nearby" />
+              <Cafelist type="nearby" onClose={onClose} />
             ) : (
-              <Cafelist type="my" />
+              <Cafelist type="my" onClose={onClose} />
             )}
           </div>
         </div>

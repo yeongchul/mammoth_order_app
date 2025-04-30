@@ -1,6 +1,6 @@
 import { AnimatePresence } from "framer-motion";
 import { useState } from "react";
-import Choosecafe from "../../components/Drawer/chooseCafe";
+import Choosecafe from "../../components/Drawer/Choosecafe";
 
 export default function OrderBox() {
   const [isOpen, setIsOpen] = useState(false);

@@ -1,7 +1,7 @@
 //이달의 추천 메뉴 박스
 import { AnimatePresence } from "framer-motion";
 import { BeverageItem } from "../../types/common";
-import Choosecafe from "../../components/Drawer/chooseCafe";
+import Choosecafe from "../../components/Drawer/Choosecafe";
 import { useState } from "react";
 
 export default function RecommendBox() {

@@ -16,7 +16,7 @@ export default function Startpage() {
     <>
       <div className="flex w-full h-screen bg-[#5D4037] justify-center items-center">
         <img
-          src="src/assets/mammoth_logo.png"
+          src="src/assets/logo/mammoth_logo.png"
           alt="메머드 로고"
           className="w-24"
           style={{
