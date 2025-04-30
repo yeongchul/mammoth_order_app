@@ -21,14 +21,15 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true)
+    @Column(nullable = false, unique = true)
     private String email;
 
+    @Column(nullable = false)
     private String name;
 
     private String profileImage;
 
-    @Column(unique = true)
+    @Column(nullable = false, unique = true)
     private Long kakaoId;
 
     @ElementCollection(fetch = FetchType.EAGER)
@@ -43,4 +44,7 @@ public class User {
 
     // 리프레시 토큰 저장용
     private String refreshToken;
+
+    @Column(nullable = false)
+    private Integer point;
 }

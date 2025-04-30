@@ -45,6 +45,7 @@ public class AuthService {
         return createAuthResponse(user, accessToken, refreshToken);
     }
 
+    // 카카오 로그인 시 사용자 정보를 조회하고, 기존 유저가 없을 경우 회원가입
     private User getUserFromKakaoProfile(KakaoDTO.KakaoProfile profile) {
         // 기존 사용자 조회
         Optional<User> existingUser = userRepository.findByKakaoId(profile.getId());
@@ -60,11 +61,13 @@ public class AuthService {
                 .name(profile.getKakaoAccount().getProfile().getNickname())
                 .profileImage(profile.getKakaoAccount().getProfile().getProfileImageUrl())
                 .roles(new HashSet<>(Collections.singleton("ROLE_USER")))
+                .point(0)
                 .build();
 
         return userRepository.save(newUser);
     }
 
+    // 로그인 또는 회원가입이 완료되었을 때 access token 생성, refresh token 생성, 위 두 토큰과 사용자 정보를 묶어서 클라이언트에 전달
     private AuthResponseDTO createAuthResponse(User user, String accessToken, String refreshToken) {
         return AuthResponseDTO.builder()
                 .token(accessToken)
