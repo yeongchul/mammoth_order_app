@@ -47,9 +47,9 @@ export default function Beveragepage(type: {
       type: "coffee",
     },
   ];
-  const filteredBeverage = Beverage.filter(
-    (item) => item.type === beveragetype
-  );
+  // const filteredBeverage = Beverage.filter(
+  //   (item) => item.type === type
+  // );
   return (
     <>
       <div className="flex h-screen bg-white flex-wrap">
