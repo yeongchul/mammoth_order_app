@@ -2,6 +2,7 @@ export interface BeverageItem {
   imgSrc: string;
   name: string;
   price: number;
+  type?: string;
 }
 
 export interface OrderLog {
