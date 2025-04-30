@@ -8,7 +8,7 @@ export default function Choosecafe({ onClose }: IsClose) {
   const [activeTab, setActiveTab] = useState<"nearby" | "my">("nearby");
   return (
     <>
-      <div className="fixed inset-0 bg-black bg-opacity-50 z-40"></div>
+      <div className="fixed inset-0 h-screen bg-black bg-opacity-50 z-40"></div>
       <motion.div
         className="fixed inset-0 bg-white rounded-t-2xl z-50"
         initial={{ y: "100%" }}
@@ -22,7 +22,10 @@ export default function Choosecafe({ onClose }: IsClose) {
             <a
               role="tab"
               className={`tab ${activeTab === "nearby" ? "tab-active" : ""}`}
-              onClick={() => setActiveTab("nearby")}
+              onClick={() => {
+                setActiveTab("nearby");
+                window.scrollTo(0, 0);
+              }}
             >
               <p className="font-extrabold">주변매장</p>
             </a>

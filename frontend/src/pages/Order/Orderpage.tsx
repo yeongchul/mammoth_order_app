@@ -12,7 +12,7 @@ export default function Orderpage() {
 
   const typeLabels: Record<BeveragelistProps["type"], string> = {
     new: "NEW",
-    coffe: "커피",
+    coffee: "커피",
     coldbrew: "콜드브루",
     noncoffe: "논 커피",
     teaade: "티/에이드",
@@ -36,7 +36,7 @@ export default function Orderpage() {
   return (
     <>
       <OrderHeader onClose={() => history.back()} />
-      <div className="h-screen bg-gray-200 overflow-auto">
+      <div className="bg-gray-200">
         <div className="flex justify-between items-center bg-white p-2 mb-3">
           <div className="flex flex-row ml-2">
             <p className="font-extrabold">{cafename}</p>

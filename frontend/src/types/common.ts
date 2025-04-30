@@ -41,7 +41,7 @@ export type CafelistProps = {
 export type BeveragelistProps = {
   type:
     | "new"
-    | "coffe"
+    | "coffee"
     | "coldbrew"
     | "noncoffe"
     | "teaade"

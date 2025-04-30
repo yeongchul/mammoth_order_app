@@ -83,7 +83,7 @@ export default function Cafelist({ type, onClose }: CafelistProps & IsClose) {
   };
   return (
     <div className="flex flex-col h-screen">
-      <div className="overflow-auto">
+      <div className="overflow-y-auto">
         {type == "nearby" && (
           <div className="flex justify-between bg-gray-100 p-3.5 items-center mt-0.5">
             <p className="text-sm text-gray-700">
