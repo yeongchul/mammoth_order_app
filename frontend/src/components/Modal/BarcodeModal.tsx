@@ -1,18 +1,25 @@
-import { ModalProps } from "../../types/common";
+import { motion } from "framer-motion";
+import { IsClose } from "../../types/common";
 import { useState } from "react";
 
-export default function BarcodeModal({ isOpen, setIsOpen }: ModalProps) {
+export default function BarcodeModal({ onClose }: IsClose) {
   const [isChecked, setIsChecked] = useState(false);
   return (
-    isOpen && (
+    <motion.div
+      className="fixed inset-0  z-50"
+      initial={{ y: "100%" }}
+      animate={{ y: 0 }}
+      exit={{ y: "100%" }}
+      transition={{ duration: 0.3, ease: "easeInOut" }}
+    >
       <dialog open className="modal">
         <div className="flex justify-center absolute top-[15%]">
           <button
-            onClick={() => setIsOpen(false)}
+            onClick={onClose}
             className="btn btn-md btn-circle bg-opacity-40 border-0 bg-gray-300 shadow-none"
           >
             <img
-              src="src/assets/icon_close.png"
+              src="src/assets/icon/icon_close.png"
               alt="X아이콘"
               className="w-7"
               style={{
@@ -23,7 +30,7 @@ export default function BarcodeModal({ isOpen, setIsOpen }: ModalProps) {
         </div>
         <div className="relative modal-box h-[55%] w-[80%]">
           <img
-            src="src/assets/mammoth_text.png"
+            src="src/assets/logo/mammoth_text.png"
             alt="매머드글씨"
             className="mt-3"
             style={{
@@ -58,6 +65,6 @@ export default function BarcodeModal({ isOpen, setIsOpen }: ModalProps) {
           </div>
         </div>
       </dialog>
-    )
+    </motion.div>
   );
 }

@@ -1,8 +1,11 @@
 //이달의 추천 메뉴 박스
-import { MenuItem } from "../../types/common";
+import { AnimatePresence } from "framer-motion";
+import { BeverageItem } from "../../types/common";
+import Choosecafe from "../../components/Drawer/chooseCafe";
+import { useState } from "react";
 
 export default function RecommendBox() {
-  const menuItems: MenuItem[] = [
+  const beverageItems: BeverageItem[] = [
     {
       imgSrc:
         "https://img.daisyui.com/images/stock/photo-1559703248-dcaaec9fab78.webp",
@@ -46,16 +49,21 @@ export default function RecommendBox() {
       price: 4500,
     },
   ];
+  const [isOpen, setIsOpen] = useState(false);
   return (
     <div className="pl-4 pt-1 pr-4 pb-4">
       <div className="flex justify-between items-center">
         <p className="font-bold text-md">이달의 추천 메뉴</p>
-        <p role="button" className="font-semibold text-xs text-gray-500">
+        <p
+          role="button"
+          className="font-semibold text-xs text-gray-500"
+          onClick={() => setIsOpen(true)}
+        >
           더보기
         </p>
       </div>
       <div className="carousel overflow-x-auto mt-4 pt-4 pb-4 bg-white w-full h-60 shadow-sm rounded-md">
-        {menuItems.map((items, index) => (
+        {beverageItems.map((items, index) => (
           <div
             key={index}
             className="carousel-item flex flex-col pl-2 pr-2 items-center"
@@ -74,6 +82,9 @@ export default function RecommendBox() {
           </div>
         ))}
       </div>
+      <AnimatePresence>
+        {isOpen && <Choosecafe onClose={() => setIsOpen(false)} />}
+      </AnimatePresence>
     </div>
   );
 }

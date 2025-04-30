@@ -1,12 +1,19 @@
-export interface MenuItem {
+export interface BeverageItem {
   imgSrc: string;
   name: string;
   price: number;
 }
 
-export interface ModalProps {
-  isOpen: boolean;
-  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+export interface OrderLog {
+  beverage: string;
+  price: number;
+  point: number;
+  orderdate: Date;
+}
+
+export interface CafeList {
+  name: string;
+  address: string;
 }
 
 export interface User {
@@ -21,3 +28,22 @@ export interface AuthResponse {
   refreshToken: string;
   user: User;
 }
+
+export interface IsClose {
+  onClose: () => void;
+}
+
+export type CafelistProps = {
+  type: "nearby" | "my";
+};
+
+export type BeveragelistProps = {
+  type:
+    | "new"
+    | "coffe"
+    | "coldbrew"
+    | "noncoffe"
+    | "teaade"
+    | "frappe"
+    | "food";
+};
