@@ -6,7 +6,7 @@ import ShowBanner from "./ShowBanner";
 
 export default function Homepage() {
   return (
-    <div className="h-screen bg-gray-100 overflow-auto">
+    <div className="h-screen bg-[#F7F7F7] overflow-auto">
       <HomeHeader />
       <ShowBanner />
       <OrderBox />

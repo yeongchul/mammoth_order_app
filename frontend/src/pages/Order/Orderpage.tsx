@@ -1,20 +1,26 @@
 import OrderHeader from "../../components/Header/OrderHeader";
 import Beveragepage from "./Beveragepage";
+import ExplainBox from "./ExplainBox";
+import Detailpage from "../Detail/Detailpage";
+import Choosecafe from "../../components/Drawer/Choosecafe";
 import { useParams } from "react-router-dom";
 import { useState } from "react";
 import { BeveragelistProps } from "../../types/common";
 import { useRef } from "react";
+import { AnimatePresence } from "framer-motion";
 
 export default function Orderpage() {
   const tabRefs = useRef<(HTMLAnchorElement | null)[]>([]);
   const { cafename } = useParams<{ cafename: string }>();
   const [activeTab, setActiveTab] = useState<BeveragelistProps["type"]>("new");
+  const [isDetailOpen, setIsDetailOpen] = useState(false);
+  const [beverageId, setBeverageId] = useState<number | null>(null);
 
   const typeLabels: Record<BeveragelistProps["type"], string> = {
     new: "NEW",
     coffee: "커피",
     coldbrew: "콜드브루",
-    noncoffe: "논 커피",
+    noncoffee: "논 커피",
     teaade: "티/에이드",
     frappe: "프라페/블렌디드",
     food: "디저트",
@@ -33,10 +39,16 @@ export default function Orderpage() {
     }
   };
 
+  const handleOpenDetail = (id: number) => {
+    setBeverageId(id);
+    setIsDetailOpen(true);
+  };
+
+  const [isOpen, setIsOpen] = useState(false);
   return (
     <div className="h-screen">
       <OrderHeader onClose={() => history.back()} />
-      <div className="bg-gray-200 h-[90%] overflow-y-auto">
+      <div className="bg-[#ECECEC] h-[90%] overflow-y-auto">
         <div className="flex justify-between items-center bg-white p-2 mb-3">
           <div className="flex flex-row ml-2">
             <p className="font-extrabold">{cafename}</p>
@@ -45,6 +57,7 @@ export default function Orderpage() {
           <div
             role="button"
             className="flex items-center justify-center p-0.5 pl-3 pr-3 mr-2 border-2 border-gray-300 text-gray-400 font-bold text-sm rounded-lg"
+            onClick={() => setIsOpen(true)}
           >
             변경
           </div>
@@ -73,8 +86,20 @@ export default function Orderpage() {
             ))}
           </div>
         </div>
-        <Beveragepage type={activeTab} />
+        <Beveragepage type={activeTab} onOpenDetail={handleOpenDetail} />
+        <ExplainBox />
+        <AnimatePresence>
+          {isDetailOpen && (
+            <Detailpage
+              onClose={() => setIsDetailOpen(false)}
+              id={beverageId}
+            />
+          )}
+        </AnimatePresence>
       </div>
+      <AnimatePresence>
+        {isOpen && <Choosecafe onClose={() => setIsOpen(false)} />}
+      </AnimatePresence>
     </div>
   );
 }

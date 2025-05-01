@@ -1,8 +1,19 @@
 export interface BeverageItem {
+  Id: number;
   imgSrc: string;
   name: string;
   price: number;
-  type?: string;
+  type: string;
+  new: boolean;
+  milk: boolean;
+}
+
+export interface Cart {
+  BeverageId: number;
+  Cup: string;
+  ICE: boolean;
+  Size: string;
+  Milkoption?: string;
 }
 
 export interface OrderLog {
@@ -33,6 +44,9 @@ export interface AuthResponse {
 export interface IsClose {
   onClose: () => void;
 }
+export interface DetailProps extends IsClose {
+  id: number | null;
+}
 
 export type CafelistProps = {
   type: "nearby" | "my";
@@ -43,7 +57,7 @@ export type BeveragelistProps = {
     | "new"
     | "coffee"
     | "coldbrew"
-    | "noncoffe"
+    | "noncoffee"
     | "teaade"
     | "frappe"
     | "food";

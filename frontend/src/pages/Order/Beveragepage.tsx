@@ -1,76 +1,30 @@
 import { BeveragelistProps, BeverageItem } from "../../types/common";
+import { Beverage } from "../../contexts/BeverageContext";
+
+interface BeveragepageProps extends BeveragelistProps {
+  onOpenDetail: (id: number) => void;
+}
 
 export default function Beveragepage({
   type,
-}: {
-  type: BeveragelistProps["type"];
-}) {
-  const Beverage: BeverageItem[] = [
-    {
-      imgSrc:
-        "https://mmthcoffee.com/files/menu/f32901974928a36d3e5785397f94577e.png",
-      name: "아메리카노",
-      price: 1600,
-      type: "coffee",
-    },
-    {
-      imgSrc:
-        "https://mmthcoffee.com/files/menu/c3be7a55436a285a2a49b774788b4ce3.png",
-      name: "디카페인 크림 브륄레 라뗴",
-      price: 4500,
-      type: "coffee",
-    },
-    {
-      imgSrc:
-        "https://mmthcoffee.com/files/menu/f32901974928a36d3e5785397f94577e.png",
-      name: "아메리카노",
-      price: 1600,
-      type: "coffee",
-    },
-    {
-      imgSrc:
-        "https://mmthcoffee.com/files/menu/f32901974928a36d3e5785397f94577e.png",
-      name: "아메리카노",
-      price: 1600,
-      type: "coffee",
-    },
-    {
-      imgSrc:
-        "https://mmthcoffee.com/files/menu/f99fa209b8c8034cb7d31b1dc5694f2d.png",
-      name: "콜드브루",
-      price: 2300,
-      type: "coldbrew",
-    },
-    {
-      imgSrc:
-        "https://mmthcoffee.com/files/menu/f32901974928a36d3e5785397f94577e.png",
-      name: "아메리카노",
-      price: 1600,
-      type: "coffee",
-    },
-    {
-      imgSrc:
-        "https://mmthcoffee.com/files/menu/c3be7a55436a285a2a49b774788b4ce3.png",
-      name: "디카페인 크림 브륄레 라뗴",
-      price: 4500,
-      type: "coffee",
-    },
-    {
-      imgSrc:
-        "https://mmthcoffee.com/files/menu/f32901974928a36d3e5785397f94577e.png",
-      name: "아메리카노",
-      price: 1600,
-      type: "coffee",
-    },
-  ];
-  const filteredBeverage = Beverage.filter((item) => item.type === type);
+  onOpenDetail,
+}: BeveragepageProps) {
+  const filteredBeverage =
+    type === "new"
+      ? Beverage.filter((item) => item.new)
+      : Beverage.filter((item) => item.type === type);
+
+  // new인 제품을 우선 정렬
+  filteredBeverage.sort((a, b) => Number(b.new) - Number(a.new));
   return (
     <>
       <div className="flex overflow-y-auto bg-white flex-wrap pl-3 pr-3">
         {filteredBeverage.map((cafe, index) => (
           <div
             key={index}
+            role="button"
             className="flex flex-col w-1/3 items-center p-2 mb-10"
+            onClick={() => onOpenDetail(cafe.Id)}
           >
             <img
               src={cafe.imgSrc}
@@ -81,6 +35,11 @@ export default function Beveragepage({
             <p className="text-md font-semibold mt-1">
               {new Intl.NumberFormat("ko-KR").format(cafe.price)}원
             </p>
+            {cafe.new && (
+              <div className="mt-2.5 border-2 pr-1 pl-1 border-red-600 text-red-600 font-bold text-[10px] rounded-md">
+                NEW
+              </div>
+            )}
           </div>
         ))}
       </div>
