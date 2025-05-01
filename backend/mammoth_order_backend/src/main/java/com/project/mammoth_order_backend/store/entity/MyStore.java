@@ -1,7 +1,8 @@
-package com.project.mammoth_order_backend.order.entity;
+package com.project.mammoth_order_backend.store.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -20,4 +21,10 @@ public class MyStore {
 
     @Column(nullable = false)
     private Long storeId;
+
+    @Builder
+    public MyStore(Long userId, Long storeId) {
+        this.userId = userId;
+        this.storeId = storeId;
+    }
 }
