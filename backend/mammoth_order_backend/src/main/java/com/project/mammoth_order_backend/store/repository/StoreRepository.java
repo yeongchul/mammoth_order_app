@@ -1,6 +1,6 @@
-package com.project.mammoth_order_backend.order.repository;
+package com.project.mammoth_order_backend.store.repository;
 
-import com.project.mammoth_order_backend.order.entity.Store;
+import com.project.mammoth_order_backend.store.entity.Store;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

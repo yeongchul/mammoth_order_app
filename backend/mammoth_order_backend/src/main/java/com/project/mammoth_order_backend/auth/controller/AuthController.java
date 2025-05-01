@@ -3,6 +3,7 @@ package com.project.mammoth_order_backend.auth.controller;
 import com.project.mammoth_order_backend.auth.dto.AuthResponseDTO;
 import com.project.mammoth_order_backend.auth.security.CustomUserDetails;
 import com.project.mammoth_order_backend.auth.service.AuthService;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,10 @@ public class AuthController {
     private final AuthService authService;
 
     // 카카오 로그인 콜백 처리 -> 카카오 로그인을 처리하는 컨트롤러 엔드포인트
+    @Operation(
+            summary = "카카오 로그인 콜백",
+            description = "카카오 로그인 인가 코드를 받아 사용자 인증을 처리합니다."
+    )
     @PostMapping("/kakao/callback")
     public ResponseEntity<AuthResponseDTO> kakaoCallback(@RequestBody Map<String, String> request) {
         String code = request.get("code");
@@ -31,6 +36,10 @@ public class AuthController {
     }
 
     // 토큰 갱신
+    @Operation(
+            summary = "토큰 갱신",
+            description = "리프레시 토큰을 사용해 액세스 토큰을 재발급합니다."
+    )
     @PostMapping("/refresh")
     public ResponseEntity<AuthResponseDTO> refreshToken(@RequestBody Map<String, String> request) {
         String refreshToken = request.get("refreshToken");
@@ -39,6 +48,10 @@ public class AuthController {
     }
 
     // 토큰 유효성 검증
+    @Operation(
+            summary = "토큰 유효성 검증",
+            description = "Authorization 헤더의 JWT 토큰이 유효한지 검증합니다."
+    )
     @GetMapping("/validate")
     public ResponseEntity<Map<String, Boolean>> validateToken(@RequestHeader("Authorization") String bearerToken) {
         String token = bearerToken.substring(7);
@@ -51,6 +64,10 @@ public class AuthController {
     }
 
     // 현재 사용자 정보 조회
+    @Operation(
+            summary = "현재 사용자 정보 조회",
+            description = "현재 로그인된 사용자의 정보를 반환합니다."
+    )
     @GetMapping("/me")
     public ResponseEntity<AuthResponseDTO.UserDTO> getCurrentUser(@AuthenticationPrincipal CustomUserDetails userDetails) {
         AuthResponseDTO.UserDTO userDTO = authService.getCurrentUser(userDetails.getId());
