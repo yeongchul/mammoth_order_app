@@ -21,5 +21,6 @@ public class AuthResponseDTO {
         private String name;
         private String email;
         private String profileImage;
+        private Integer point;
     }
 }

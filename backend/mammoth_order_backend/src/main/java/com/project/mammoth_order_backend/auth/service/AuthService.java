@@ -151,6 +151,7 @@ public class AuthService {
                 .name(user.getName())
                 .email(user.getEmail())
                 .profileImage(user.getProfileImage())
+                .point(user.getPoint())
                 .build();
     }
 }
