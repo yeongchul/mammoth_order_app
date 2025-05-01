@@ -1,5 +1,8 @@
 //이달의 추천 메뉴 박스
+import { AnimatePresence } from "framer-motion";
 import { BeverageItem } from "../../types/common";
+import Choosecafe from "../../components/Drawer/Choosecafe";
+import { useState } from "react";
 
 export default function RecommendBox() {
   const beverageItems: BeverageItem[] = [
@@ -46,11 +49,16 @@ export default function RecommendBox() {
       price: 4500,
     },
   ];
+  const [isOpen, setIsOpen] = useState(false);
   return (
     <div className="pl-4 pt-1 pr-4 pb-4">
       <div className="flex justify-between items-center">
         <p className="font-bold text-md">이달의 추천 메뉴</p>
-        <p role="button" className="font-semibold text-xs text-gray-500">
+        <p
+          role="button"
+          className="font-semibold text-xs text-gray-500"
+          onClick={() => setIsOpen(true)}
+        >
           더보기
         </p>
       </div>
@@ -74,6 +82,9 @@ export default function RecommendBox() {
           </div>
         ))}
       </div>
+      <AnimatePresence>
+        {isOpen && <Choosecafe onClose={() => setIsOpen(false)} />}
+      </AnimatePresence>
     </div>
   );
 }

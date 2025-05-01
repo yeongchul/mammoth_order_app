@@ -18,17 +18,18 @@ export default function BarcodeModal({ onClose }: IsClose) {
             onClick={onClose}
             className="btn btn-md btn-circle bg-opacity-40 border-0 bg-gray-300 shadow-none"
           >
-            <img
-              src="src/assets/icon/icon_close.png"
-              alt="X아이콘"
-              className="w-7"
-              style={{
-                filter: "invert(1)",
-              }}
-            />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              height="24px"
+              viewBox="0 -960 960 960"
+              width="24px"
+              fill="#FFFFFF"
+            >
+              <path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" />
+            </svg>
           </button>
         </div>
-        <div className="relative modal-box h-[55%] w-[80%]">
+        <div className="relative modal-box h-[55%] w-[80%] overflow-hidden">
           <img
             src="src/assets/logo/mammoth_text.png"
             alt="매머드글씨"

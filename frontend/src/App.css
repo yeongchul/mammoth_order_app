@@ -1,4 +1,12 @@
+@import url("https://fonts.googleapis.com/css2?family=Dongle&family=Nanum+Gothic&family=Noto+Sans+KR:wght@100..900&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@plugin "daisyui";
+
+/* 폰트 적용 */
+@layer base {
+  body {
+    @apply font-nanum;
+  }
+}

@@ -1,4 +1,10 @@
+import { AnimatePresence } from "framer-motion";
+import { useState } from "react";
+import Choosecafe from "../../components/Drawer/Choosecafe";
+
 export default function OrderBox() {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
     <div className="p-4">
       <p className="font-bold text-md">정채빈 님</p>
@@ -11,7 +17,7 @@ export default function OrderBox() {
             </p>
             <div className="flex flex-row text-white pt-1 pl-4 text-xs">
               <img
-                src="src/assets/icon_pin.png"
+                src="src/assets/icon/icon_pin.png"
                 alt="핀 아이콘"
                 className="w-3 h-3 pt-0.5 mr-0.5"
                 style={{
@@ -23,7 +29,7 @@ export default function OrderBox() {
           </div>
           <button className="flex m-4 h-12 w-20 bg-[#554A4A] justify-center items-center flex-col rounded-xl">
             <img
-              src="src/assets/mammoth_logo_notext.png"
+              src="src/assets/logo/mammoth_logo_notext.png"
               alt="메머드커피 로고"
               className="w-6 h-4"
               style={{
@@ -37,9 +43,12 @@ export default function OrderBox() {
           <p className="font-semibold text-md">모아보기</p>
           <div className="flex justify-between">
             <div className="flex flex-col items-center justify-center w-14">
-              <button className="flex bg-[#403535] rounded-2xl w-full h-14 mt-3 justify-center items-center">
+              <button
+                className="flex bg-[#403535] rounded-2xl w-full h-14 mt-3 justify-center items-center"
+                onClick={() => setIsOpen(true)}
+              >
                 <img
-                  src="src/assets/icon_order.png"
+                  src="src/assets/icon/icon_order.png"
                   alt="커피주문아이콘"
                   className="p-2.5 h-full"
                   style={{
@@ -52,7 +61,7 @@ export default function OrderBox() {
             <div className="flex flex-col items-center justify-center w-14">
               <button className="flex justify-center items-center border-2 border-gray-100 rounded-2xl w-full h-14 mt-3">
                 <img
-                  src="src/assets/icon_card.png"
+                  src="src/assets/icon/icon_card.png"
                   alt="카드아이콘"
                   className="p-2.5 w-full"
                 />
@@ -62,7 +71,7 @@ export default function OrderBox() {
             <div className="flex flex-col items-center justify-center w-14">
               <button className="flex justify-center items-center border-2 border-gray-100 rounded-2xl w-full h-14 mt-3">
                 <img
-                  src="src/assets/icon_award.png"
+                  src="src/assets/icon/icon_award.png"
                   alt="어워드아이콘"
                   className="p-2.5 h-full"
                 />
@@ -72,7 +81,7 @@ export default function OrderBox() {
             <div className="flex flex-col items-center justify-center w-14">
               <button className="flex justify-center items-center border-2 border-gray-100 rounded-2xl w-full h-14 mt-3">
                 <img
-                  src="src/assets/icon_stamp.png"
+                  src="src/assets/icon/icon_stamp.png"
                   alt="스탬프아이콘"
                   className="p-2.5 h-full"
                 />
@@ -82,7 +91,7 @@ export default function OrderBox() {
             <div className="flex flex-col items-center justify-center w-14">
               <button className="flex justify-center items-center border-2 border-gray-100 rounded-2xl w-full h-14 mt-3">
                 <img
-                  src="src/assets/icon_cupon.png"
+                  src="src/assets/icon/icon_cupon.png"
                   alt="쿠폰아이콘"
                   className="p-3 w-full"
                 />
@@ -92,6 +101,9 @@ export default function OrderBox() {
           </div>
         </div>
       </div>
+      <AnimatePresence>
+        {isOpen && <Choosecafe onClose={() => setIsOpen(false)} />}
+      </AnimatePresence>
     </div>
   );
 }

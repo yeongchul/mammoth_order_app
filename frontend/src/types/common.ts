@@ -2,6 +2,7 @@ export interface BeverageItem {
   imgSrc: string;
   name: string;
   price: number;
+  type?: string;
 }
 
 export interface OrderLog {
@@ -9,6 +10,11 @@ export interface OrderLog {
   price: number;
   point: number;
   orderdate: Date;
+}
+
+export interface CafeList {
+  name: string;
+  address: string;
 }
 
 export interface User {
@@ -27,3 +33,18 @@ export interface AuthResponse {
 export interface IsClose {
   onClose: () => void;
 }
+
+export type CafelistProps = {
+  type: "nearby" | "my";
+};
+
+export type BeveragelistProps = {
+  type:
+    | "new"
+    | "coffee"
+    | "coldbrew"
+    | "noncoffe"
+    | "teaade"
+    | "frappe"
+    | "food";
+};

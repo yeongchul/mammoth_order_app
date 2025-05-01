@@ -75,7 +75,7 @@ export default function Alarmlog() {
       <ul>
         {orderlog.map((logs, index) => (
           <>
-            <li className="p-2 pb-3 border-b-2 border-gray-100">
+            <li key={index} className="p-2 pb-3 border-b-2 border-gray-100">
               <p className="text-sm mb-1">[픽업완료] {logs.beverage} 1개</p>
               <div className="flex text-xs flex-row text-gray-500">
                 <p className="font-bold mr-2 text-black">주문</p>{" "}
