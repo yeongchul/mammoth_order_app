@@ -1,4 +1,4 @@
-package com.project.mammoth_order_backend.order;
+package com.project.mammoth_order_backend.order.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -6,17 +6,18 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "menu")
+@Table(name = "store")
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Menu {
+public class Store {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false)
     private String name;
-    private Integer price;
-    private String image;
-    private Boolean hasMilk;
-    private MenuType menuType;
+
+    @Column(nullable = false)
+    private String address;
 }
