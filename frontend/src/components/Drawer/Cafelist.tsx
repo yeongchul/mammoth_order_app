@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { CafeList, IsClose, CafelistProps } from "../../types/common";
 import { useNavigate } from "react-router-dom";
+import mammothLogo from "../../assets/logo/mammoth_logo_notext.png";
 
 export default function Cafelist({ type, onClose }: CafelistProps & IsClose) {
   const navigate = useNavigate();
@@ -85,8 +86,8 @@ export default function Cafelist({ type, onClose }: CafelistProps & IsClose) {
     <div className="flex flex-col">
       <div>
         {type == "nearby" && (
-          <div className="flex justify-between bg-gray-100 p-3.5 items-center mt-0.5">
-            <p className="text-sm text-gray-700">
+          <div className="flex justify-between bg-[#F4F4F4] p-3.5 items-center mt-0.5">
+            <p className="text-sm font-medium text-gray-600">
               내 위치로부터 반경 2km 이내의 매장입니다.
             </p>
             <svg
@@ -110,7 +111,7 @@ export default function Cafelist({ type, onClose }: CafelistProps & IsClose) {
               >
                 <div className="flex relative justify-center items-center bg-[#5D4037] w-14 h-14 rounded-xl mr-3">
                   <img
-                    src="src\assets\logo\mammoth_logo_notext.png"
+                    src={mammothLogo}
                     alt="글자없는매머드로고"
                     style={{
                       filter: "brightness(0) invert(1)",
