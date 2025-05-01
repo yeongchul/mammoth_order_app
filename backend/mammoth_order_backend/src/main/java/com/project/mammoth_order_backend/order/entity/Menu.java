@@ -29,5 +29,9 @@ public class Menu {
     private Boolean hasMilk;
 
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private MenuType menuType;
+
+    @Column(nullable = false)
+    private Boolean isNewMenu = false;
 }

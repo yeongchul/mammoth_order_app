@@ -2,6 +2,7 @@ package com.project.mammoth_order_backend.order.controller;
 
 import com.project.mammoth_order_backend.auth.security.CustomUserDetails;
 import com.project.mammoth_order_backend.order.dto.CartItemDto;
+import com.project.mammoth_order_backend.order.dto.MenuResponseDto;
 import com.project.mammoth_order_backend.order.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,13 @@ import java.util.List;
 @RequiredArgsConstructor
 public class OrderController {
     private final OrderService orderService;
+
+    // 메뉴 전체 보기
+    @GetMapping("/menu")
+    public ResponseEntity<MenuResponseDto> getMenu() {
+        MenuResponseDto menuResponseDto = orderService.getMenu();
+        return ResponseEntity.ok(menuResponseDto);
+    }
 
     // 장바구니 보기
     @GetMapping("/cart")
@@ -38,31 +46,17 @@ public class OrderController {
         return ResponseEntity.ok("장바구니에서 삭제하였습니다.");
     }
 
-    // 장바구니 구매
-    /*@PostMapping("/cart/purchase")
-    public ResponseEntity<String> purchaseCart(@RequestBody List<Long> cartId) {
-        orderService.purchaseCart(cartId);
-    }*/
-
-    // 바로 구매
-    /*
-    private final OrderService orderService;
-    private final UserRepository userRepository;
-
-    // 메뉴 전체 반환
-    @GetMapping("/findAll")
-    public ResponseEntity<List<Menu>> findAllMenu() {
-        List<Menu> menus = orderService.findAllMenu();
-        return ResponseEntity.ok(menus);
+    // 장바구니 구매 -> 사용자가 수량 바꿨을 때도 적용되게 수정해야 함.
+    @PostMapping("/cart/purchase")
+    public ResponseEntity<Integer> purchaseCart(@RequestBody List<Long> cartId) {
+        int earnedPoint = orderService.purchaseCart(cartId);
+        return ResponseEntity.ok(earnedPoint);
     }
 
     // 바로 구매
-    @PostMapping("/buy") // 3% 포인트
-    public ResponseEntity<String> buy(@RequestBody CartItemDTO cartItemDTO) {
-        Optional<User> user = userRepository.findById(cartItemDTO.getUserId());
-        //int point = user.get().getPoint();
-        //point = point + (cartItemDTO.getProductPrice() * cartItemDTO.getProductQuantity()) * 0.03;
-        //user.get().setPoint(point);
-        return ResponseEntity.ok("구매 성공");
-    }*/
+    @PostMapping("/buy-now")
+    public ResponseEntity<Integer> buyNow(@RequestBody CartItemDto cartItemDto) {
+        int earnedPoint = orderService.buyNow(cartItemDto);
+        return ResponseEntity.ok(earnedPoint);
+    }
 }
