@@ -34,9 +34,9 @@ export default function Orderpage() {
   };
 
   return (
-    <>
+    <div className="h-screen">
       <OrderHeader onClose={() => history.back()} />
-      <div className="bg-gray-200">
+      <div className="bg-gray-200 h-[90%] overflow-y-auto">
         <div className="flex justify-between items-center bg-white p-2 mb-3">
           <div className="flex flex-row ml-2">
             <p className="font-extrabold">{cafename}</p>
@@ -75,6 +75,6 @@ export default function Orderpage() {
         </div>
         <Beveragepage type={activeTab} />
       </div>
-    </>
+    </div>
   );
 }

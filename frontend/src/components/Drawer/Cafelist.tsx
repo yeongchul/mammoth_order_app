@@ -47,8 +47,8 @@ export default function Cafelist({ type, onClose }: CafelistProps & IsClose) {
       address: "서울특별시 중구 청파로 461, 1층(중림동)",
     },
     {
-      name: "중림한국경제점",
-      address: "서울특별시 중구 청파로 461, 1층(중림동)",
+      name: "충정로점",
+      address: "서울특별시 서대문구 경기대로 26-22",
     },
     // 12개
   ];
@@ -82,8 +82,8 @@ export default function Cafelist({ type, onClose }: CafelistProps & IsClose) {
     }, 500);
   };
   return (
-    <div className="flex flex-col h-screen">
-      <div className="overflow-y-auto">
+    <div className="flex flex-col">
+      <div>
         {type == "nearby" && (
           <div className="flex justify-between bg-gray-100 p-3.5 items-center mt-0.5">
             <p className="text-sm text-gray-700">
@@ -100,7 +100,7 @@ export default function Cafelist({ type, onClose }: CafelistProps & IsClose) {
             </svg>
           </div>
         )}
-        <ul>
+        <ul className="mb-6">
           {listToShow.map((cafe, index) => (
             <li key={index} className="p-2 border-b-2 border-gray-100">
               <div
@@ -148,7 +148,6 @@ export default function Cafelist({ type, onClose }: CafelistProps & IsClose) {
             </li>
           ))}
         </ul>
-        <div className=" w-full h-[21%]"></div>
       </div>
     </div>
   );

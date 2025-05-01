@@ -16,33 +16,32 @@ export default function Choosecafe({ onClose }: IsClose) {
         exit={{ y: "100%" }}
         transition={{ duration: 0.3, ease: "easeInOut" }}
       >
-        <div>
+        <div className="h-screen">
           <ChoosecafeHeader onClose={onClose} />
-          <div role="tablist" className="tabs tabs-border shadow-md pl-3">
-            <a
-              role="tab"
-              className={`tab ${activeTab === "nearby" ? "tab-active" : ""}`}
-              onClick={() => {
-                setActiveTab("nearby");
-                window.scrollTo(0, 0);
-              }}
-            >
-              <p className="font-extrabold">주변매장</p>
-            </a>
-            <a
-              role="tab"
-              className={`tab ${activeTab === "my" ? "tab-active" : ""}`}
-              onClick={() => setActiveTab("my")}
-            >
-              <p className="font-extrabold">MY매장</p>
-            </a>
-          </div>
-          <div>
-            {activeTab === "nearby" ? (
-              <Cafelist type="nearby" onClose={onClose} />
-            ) : (
-              <Cafelist type="my" onClose={onClose} />
-            )}
+          <div className="flex flex-col h-[90%] overflow-y-scroll">
+            <div role="tablist" className="tabs tabs-border shadow-md pl-3">
+              <a
+                role="tab"
+                className={`tab ${activeTab === "nearby" ? "tab-active" : ""}`}
+                onClick={() => setActiveTab("nearby")}
+              >
+                <p className="font-extrabold">주변매장</p>
+              </a>
+              <a
+                role="tab"
+                className={`tab ${activeTab === "my" ? "tab-active" : ""}`}
+                onClick={() => setActiveTab("my")}
+              >
+                <p className="font-extrabold">MY매장</p>
+              </a>
+            </div>
+            <div>
+              {activeTab === "nearby" ? (
+                <Cafelist type="nearby" onClose={onClose} />
+              ) : (
+                <Cafelist type="my" onClose={onClose} />
+              )}
+            </div>
           </div>
         </div>
       </motion.div>
