@@ -1,4 +1,4 @@
-package com.project.mammoth_order_backend.order.entity;
+package com.project.mammoth_order_backend.store.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
