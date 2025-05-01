@@ -1,13 +1,12 @@
 package com.project.mammoth_order_backend.order.controller;
 
-import com.project.mammoth_order_backend.auth.security.CustomUserDetails;
 import com.project.mammoth_order_backend.order.dto.CartItemDto;
+import com.project.mammoth_order_backend.order.dto.CartSaveRequestDto;
 import com.project.mammoth_order_backend.order.dto.MenuResponseDto;
 import com.project.mammoth_order_backend.order.service.OrderService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,26 +19,26 @@ public class OrderController {
 
     // 메뉴 전체 보기
     @Operation(summary = "메뉴 조회", description = "전체 메뉴 목록을 조회합니다.")
-    @GetMapping("/menu")
+    @GetMapping("/menus")
     public ResponseEntity<MenuResponseDto> getMenu() {
         MenuResponseDto menuResponseDto = orderService.getMenu();
         return ResponseEntity.ok(menuResponseDto);
     }
 
     // 장바구니 보기
-    @Operation(summary = "장바구니 조회", description = "현재 로그인한 사용자의 장바구니 목록을 조회합니다.")
-    @GetMapping("/cart")
+    /*@Operation(summary = "장바구니 조회", description = "현재 로그인한 사용자의 장바구니 목록을 조회합니다.")
+    @GetMapping("/carts")
     public ResponseEntity<List<CartItemDto>> getCart(@AuthenticationPrincipal CustomUserDetails userDetails) {
         Long userId = userDetails.getId();
         List<CartItemDto> cartItemDtoList = orderService.getCartItems(userId);
         return ResponseEntity.ok(cartItemDtoList);
-    }
+    }*/
 
     // 장바구니 저장
     @Operation(summary = "장바구니에 추가", description = "상품을 장바구니에 추가합니다.")
     @PostMapping("/cart")
-    public ResponseEntity<String> addToCart(@RequestBody CartItemDto cartItemDto) {
-        orderService.addToCart(cartItemDto);
+    public ResponseEntity<String> addToCart(@RequestBody CartSaveRequestDto cartSaveRequestDto) {
+        orderService.addToCart(cartSaveRequestDto);
         return ResponseEntity.ok("장바구니에 저장했습니다.");
     }
 

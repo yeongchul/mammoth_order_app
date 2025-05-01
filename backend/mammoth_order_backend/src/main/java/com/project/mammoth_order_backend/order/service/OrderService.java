@@ -3,6 +3,7 @@ package com.project.mammoth_order_backend.order.service;
 import com.project.mammoth_order_backend.auth.entity.User;
 import com.project.mammoth_order_backend.auth.repository.UserRepository;
 import com.project.mammoth_order_backend.order.dto.CartItemDto;
+import com.project.mammoth_order_backend.order.dto.CartSaveRequestDto;
 import com.project.mammoth_order_backend.order.dto.MenuResponseDto;
 import com.project.mammoth_order_backend.order.entity.Cart;
 import com.project.mammoth_order_backend.order.entity.Menu;
@@ -29,16 +30,25 @@ public class OrderService {
     }
 
     // 장바구니 보기
-    @Transactional(readOnly = true)
+    /*@Transactional(readOnly = true)
     public List<CartItemDto> getCartItems(Long userId) {
         return cartRepository.findCartItemDto(userId);
-    }
+    }*/
 
     // 장바구니 저장
     @Transactional
-    public void addToCart(CartItemDto cartItemDto) {
-        Cart cart = cartItemDto.toEntity();
-        cartRepository.save(cart);
+    public void addToCart(CartSaveRequestDto cartSaveRequestDto) {
+        Cart newCart = Cart.builder()
+                .userId(cartSaveRequestDto.getUserId())
+                .storeId(cartSaveRequestDto.getStoreId())
+                .menuId(cartSaveRequestDto.getMenuId())
+                .menuQuantity(cartSaveRequestDto.getMenuQuantity())
+                .cupType(cartSaveRequestDto.getCupType())
+                .isIce(cartSaveRequestDto.getIsIce())
+                .size(cartSaveRequestDto.getSize())
+                .milkType(cartSaveRequestDto.getMilkType())
+                .build();
+        cartRepository.save(newCart);
     }
 
     // 장바구니 삭제
