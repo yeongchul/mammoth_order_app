@@ -1,0 +1,47 @@
+<!-- templates/admin/menu-edit.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>상품 수정</title>
+  </head>
+  <body>
+    <h2>상품정보 수정</h2>
+    <form
+      th:action="@{'/api/admin/menus/' + ${menu.id}}"
+      method="post"
+      enctype="multipart/form-data"
+    >
+      <input type="hidden" name="_method" value="put" />
+
+      <label>이름</label>
+      <input type="text" name="name" th:value="${menu.name}" /><br />
+
+      <label>이미지</label>
+      <img th:src="@{${menu.imageUrl}}" width="50" />
+      <input type="file" name="image" /><br />
+
+      <label>가격</label>
+      <input type="number" name="price" th:value="${menu.price}" /><br />
+
+      <label>상품코드</label>
+      <input type="text" th:value="${menu.code}" readonly /><br />
+
+      <label>옵션</label>
+      <input type="text" name="option" th:value="${menu.option}" /><br />
+
+      <label>최종수정시간</label>
+      <input
+        type="text"
+        th:value="${#dates.format(menu.updatedAt, 'yyyy-MM-dd HH:mm:ss')}"
+        readonly
+      /><br />
+
+      <button type="submit" style="background-color: cornflowerblue">
+        수정하기
+      </button>
+      <a href="/admin/menus"
+        ><button type="button" style="background-color: red">취소</button></a
+      >
+    </form>
+  </body>
+</html>
