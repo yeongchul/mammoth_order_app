@@ -3,16 +3,19 @@ package com.project.mammoth_order_backend.order.service;
 import com.project.mammoth_order_backend.auth.entity.User;
 import com.project.mammoth_order_backend.auth.repository.UserRepository;
 import com.project.mammoth_order_backend.order.dto.CartItemDto;
+import com.project.mammoth_order_backend.order.dto.CartResponseDto;
 import com.project.mammoth_order_backend.order.dto.CartSaveRequestDto;
 import com.project.mammoth_order_backend.order.dto.MenuResponseDto;
 import com.project.mammoth_order_backend.order.entity.Cart;
 import com.project.mammoth_order_backend.order.entity.Menu;
+import com.project.mammoth_order_backend.order.enumeration.Size;
 import com.project.mammoth_order_backend.order.repository.CartRepository;
 import com.project.mammoth_order_backend.order.repository.MenuRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -30,10 +33,41 @@ public class OrderService {
     }
 
     // 장바구니 보기
-    /*@Transactional(readOnly = true)
-    public List<CartItemDto> getCartItems(Long userId) {
-        return cartRepository.findCartItemDto(userId);
-    }*/
+    @Transactional(readOnly = true)
+    public List<CartResponseDto> getCartItems(Long userId) {
+        List<Cart> cart = cartRepository.findAllByUserId(userId);
+        List<CartResponseDto> cartResponseDtoList = new ArrayList<>();
+
+        for (Cart cartItem : cart) {
+            int price = menuRepository.findById(cartItem.getMenuId()).get().getPrice();
+            if (cartItem.getSize().equals(Size.s)) {
+                price = price - 400;
+            } else if(cartItem.getSize().equals(Size.l)) {
+                price = price + 1400;
+            }
+
+            Menu menu = menuRepository.findById(cartItem.getMenuId())
+                    .orElseThrow(() -> new IllegalArgumentException("메뉴를 찾을 수 없습니다."));
+
+            CartResponseDto dto = CartResponseDto.builder()
+                    .id(cartItem.getId())
+                    .userId(cartItem.getUserId())
+                    .storeId(cartItem.getStoreId())
+                    .menuId(cartItem.getMenuId())
+                    .menuName(menu.getName())
+                    .menuImage(menu.getImage())
+                    .menuQuantity(cartItem.getMenuQuantity())
+                    .menuPrice(price)
+                    .cupType(cartItem.getCupType())
+                    .isIce(cartItem.getIsIce())
+                    .size(cartItem.getSize())
+                    .milkType(cartItem.getMilkType())
+                    .build();
+
+            cartResponseDtoList.add(dto);
+        }
+        return cartResponseDtoList;
+    }
 
     // 장바구니 저장
     @Transactional

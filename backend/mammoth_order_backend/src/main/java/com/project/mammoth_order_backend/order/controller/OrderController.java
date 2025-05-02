@@ -1,12 +1,15 @@
 package com.project.mammoth_order_backend.order.controller;
 
+import com.project.mammoth_order_backend.auth.security.CustomUserDetails;
 import com.project.mammoth_order_backend.order.dto.CartItemDto;
+import com.project.mammoth_order_backend.order.dto.CartResponseDto;
 import com.project.mammoth_order_backend.order.dto.CartSaveRequestDto;
 import com.project.mammoth_order_backend.order.dto.MenuResponseDto;
 import com.project.mammoth_order_backend.order.service.OrderService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,13 +29,13 @@ public class OrderController {
     }
 
     // 장바구니 보기
-    /*@Operation(summary = "장바구니 조회", description = "현재 로그인한 사용자의 장바구니 목록을 조회합니다.")
+    @Operation(summary = "장바구니 조회", description = "현재 로그인한 사용자의 장바구니 목록을 조회합니다.")
     @GetMapping("/carts")
-    public ResponseEntity<List<CartItemDto>> getCart(@AuthenticationPrincipal CustomUserDetails userDetails) {
+    public ResponseEntity<List<CartResponseDto>> getCart(@AuthenticationPrincipal CustomUserDetails userDetails) {
         Long userId = userDetails.getId();
-        List<CartItemDto> cartItemDtoList = orderService.getCartItems(userId);
-        return ResponseEntity.ok(cartItemDtoList);
-    }*/
+        List<CartResponseDto> cartResponseDtoList = orderService.getCartItems(userId);
+        return ResponseEntity.ok(cartResponseDtoList);
+    }
 
     // 장바구니 저장
     @Operation(summary = "장바구니에 추가", description = "상품을 장바구니에 추가합니다.")
@@ -50,8 +53,8 @@ public class OrderController {
         return ResponseEntity.ok("장바구니에서 삭제하였습니다.");
     }
 
-    // 장바구니 구매 -> 사용자가 수량 바꿨을 때도 적용되게 수정해야 함.
-    @Operation(summary = "장바구니 구매", description = "선택된 장바구니 항목을 구매합니다. (수량 반영 예정)")
+    // 장바구니 구매
+    @Operation(summary = "장바구니 구매", description = "선택된 장바구니 항목을 구매합니다.")
     @PostMapping("/cart/purchase")
     public ResponseEntity<Integer> purchaseCart(@RequestBody List<Long> cartId) {
         int earnedPoint = orderService.purchaseCart(cartId);
