@@ -36,7 +36,7 @@ public class OrderService {
     @Transactional(readOnly = true)
     public Menu getMenuById(Long menuId) {
         Menu menu = menuRepository.findById(menuId)
-                .orElseThrow(() -> new IllegalArgumentException("메뉴를 찾을 수 없습니다."));;
+                .orElseThrow(() -> new IllegalArgumentException("메뉴를 찾을 수 없습니다."));
         return menu;
     }
 

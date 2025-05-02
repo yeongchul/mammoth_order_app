@@ -19,8 +19,8 @@ public class MyStoreResponseDto {
     private Long storeId;
 
     @Schema(description = "매장 이름")
-    private String storeName;
+    private String name;
 
     @Schema(description = "매장 주소")
-    private String storeAddress;
+    private String address;
 }
