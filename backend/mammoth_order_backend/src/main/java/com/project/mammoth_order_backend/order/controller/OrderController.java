@@ -38,7 +38,7 @@ public class OrderController {
     }
 
     // 장바구니 조회
-    @Operation(summary = "장바구니 조회", description = "현재 로그인한 사용자의 장바구니 목록을 조회합니다.")
+    @Operation(summary = "장바구니 조회", description = "현재 로그인한 사용자의 장바구니 목록을 조회합니다.\nJWT 토큰을 헤더에 포함해야 합니다.")
     @GetMapping("/cart")
     public ResponseEntity<List<CartResponseDto>> getUserCartItems(@AuthenticationPrincipal CustomUserDetails userDetails) {
         Long userId = userDetails.getId();
@@ -47,7 +47,7 @@ public class OrderController {
     }
 
     // 장바구니 추가
-    @Operation(summary = "장바구니에 추가", description = "상품을 장바구니에 추가합니다.")
+    @Operation(summary = "장바구니에 추가", description = "상품을 장바구니에 추가합니다.\nJWT 토큰을 헤더에 포함해야 합니다.")
     @PostMapping("/cart/items")
     public ResponseEntity<String> addCartItem(@RequestBody CartSaveRequestDto cartSaveRequestDto, @AuthenticationPrincipal CustomUserDetails userDetails) {
         Long userId = userDetails.getId();
@@ -56,7 +56,7 @@ public class OrderController {
     }
 
     // 장바구니 삭제
-    @Operation(summary = "장바구니에서 삭제", description = "장바구니에서 특정 상품을 삭제합니다.")
+    @Operation(summary = "장바구니에서 삭제", description = "장바구니에서 특정 상품을 삭제합니다.\nJWT 토큰을 헤더에 포함해야 합니다.")
     @DeleteMapping("/cart/items/{cartId}")
     public ResponseEntity<String> deleteCartItemByIdAndUser(@PathVariable Long cartId, @AuthenticationPrincipal CustomUserDetails userDetails) {
         Long userId = userDetails.getId();
@@ -65,7 +65,7 @@ public class OrderController {
     }
 
     // 장바구니 구매
-    @Operation(summary = "장바구니 구매", description = "선택된 장바구니 항목을 구매합니다.")
+    @Operation(summary = "장바구니 구매", description = "선택된 장바구니 항목을 구매합니다.\nJWT 토큰을 헤더에 포함해야 합니다.")
     @PostMapping("/cart/purchase")
     public ResponseEntity<Integer> purchaseCartItems(@RequestBody List<Long> cartId, @AuthenticationPrincipal CustomUserDetails userDetails) {
         Long userId = userDetails.getId();

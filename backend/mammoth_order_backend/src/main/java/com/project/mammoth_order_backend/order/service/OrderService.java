@@ -11,12 +11,14 @@ import com.project.mammoth_order_backend.order.entity.Menu;
 import com.project.mammoth_order_backend.order.enumeration.Size;
 import com.project.mammoth_order_backend.order.repository.CartRepository;
 import com.project.mammoth_order_backend.order.repository.MenuRepository;
+import com.project.mammoth_order_backend.store.entity.Store;
 import com.project.mammoth_order_backend.store.repository.StoreRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -48,8 +50,12 @@ public class OrderService {
         List<Cart> cartList = cartRepository.findAllByUserId(userId);
         List<CartResponseDto> cartResponses = new ArrayList<>();
 
+        if (cartList.isEmpty()) {
+            return Collections.emptyList();
+        }
+
         for (Cart cart : cartList) {
-            Menu menu = menuRepository.findById(cart.getMenuId())
+            Menu menu = menuRepository.findById(cart.getMenu().getId())
                     .orElseThrow(() -> new IllegalArgumentException("메뉴를 찾을 수 없습니다."));
 
             int menuPrice = calculateMenuPriceWithSize(menu.getPrice(), cart.getSize());
@@ -57,9 +63,9 @@ public class OrderService {
             CartResponseDto cartResponse = CartResponseDto.builder()
                     .id(cart.getId())
                     .userId(userId)
-                    .storeId(cart.getStoreId())
-                    .storeName(storeRepository.findById(cart.getStoreId()).get().getName())
-                    .menuId(cart.getMenuId())
+                    .storeId(cart.getStore().getId())
+                    .storeName(storeRepository.findById(cart.getStore().getId()).get().getName())
+                    .menuId(cart.getMenu().getId())
                     .menuName(menu.getName())
                     .menuImage(menu.getImage())
                     .menuQuantity(cart.getMenuQuantity())
@@ -78,10 +84,17 @@ public class OrderService {
     // 장바구니 추가
     @Transactional
     public void saveCartItem(CartSaveRequestDto cartSaveRequestDto, Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
+        Store store = storeRepository.findById(cartSaveRequestDto.getStoreId())
+                .orElseThrow(() -> new IllegalArgumentException("매장을 찾을 수 없습니다."));
+        Menu menu = menuRepository.findById(cartSaveRequestDto.getMenuId())
+                .orElseThrow(() -> new IllegalArgumentException("메뉴를 찾을 수 없습니다."));
+
         Cart cart = Cart.builder()
-                .userId(userId)
-                .storeId(cartSaveRequestDto.getStoreId())
-                .menuId(cartSaveRequestDto.getMenuId())
+                .user(user)
+                .store(store)
+                .menu(menu)
                 .menuQuantity(cartSaveRequestDto.getMenuQuantity())
                 .cupType(cartSaveRequestDto.getCupType())
                 .isIce(cartSaveRequestDto.getIsIce())
@@ -97,7 +110,7 @@ public class OrderService {
         Cart cart = cartRepository.findById(cartId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 장바구니 항목입니다."));
 
-        if(!cart.getUserId().equals(userId)) {
+        if(!cart.getUser().getId().equals(userId)) {
             throw new IllegalArgumentException("이 장바구니 항목은 해당 사용자에게 속하지 않습니다.");
         }
 
@@ -114,14 +127,14 @@ public class OrderService {
         }
 
         // 사용자 확인
-        if(!cartList.get(0).getUserId().equals(userId)) {
+        if(!cartList.get(0).getUser().getId().equals(userId)) {
             throw new IllegalArgumentException("이 장바구니 항목은 해당 사용자에게 속하지 않습니다.");
         }
         
         // 금액 계산
         int total = 0;
         for (Cart cart : cartList) {
-            Long menuId = cart.getMenuId();
+            Long menuId = cart.getMenu().getId();
             int menuQuantity = cart.getMenuQuantity();
 
             Menu menu = menuRepository.findById(menuId)
