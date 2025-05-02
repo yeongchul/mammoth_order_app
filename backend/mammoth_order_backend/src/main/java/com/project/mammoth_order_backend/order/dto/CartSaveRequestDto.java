@@ -15,9 +15,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @Schema(description = "장바구니에 항목을 추가할 때 사용하는 요청 DTO")
 public class CartSaveRequestDto {
-    @Schema(description = "사용자 ID", example = "1")
-    private Long userId;
-
     @Schema(description = "매장 ID", example = "1")
     private Long storeId;
 

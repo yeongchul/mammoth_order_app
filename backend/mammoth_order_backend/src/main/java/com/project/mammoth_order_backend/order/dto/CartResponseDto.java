@@ -22,6 +22,9 @@ public class CartResponseDto {
     @Schema(description = "매장 ID")
     private Long storeId;
 
+    @Schema(description = "매장 이름")
+    private String storeName;
+
     @Schema(description = "메뉴 ID")
     private Long menuId;
 
