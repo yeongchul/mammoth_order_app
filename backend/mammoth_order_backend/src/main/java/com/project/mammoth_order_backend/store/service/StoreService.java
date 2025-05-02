@@ -1,5 +1,7 @@
 package com.project.mammoth_order_backend.store.service;
 
+import com.project.mammoth_order_backend.auth.entity.User;
+import com.project.mammoth_order_backend.auth.repository.UserRepository;
 import com.project.mammoth_order_backend.store.dto.MyStoreResponseDto;
 import com.project.mammoth_order_backend.store.dto.MyStoreSaveRequestDto;
 import com.project.mammoth_order_backend.store.entity.MyStore;
@@ -17,6 +19,7 @@ import java.util.List;
 public class StoreService {
     private final MyStoreRepository myStoreRepository;
     private final StoreRepository storeRepository;
+    private final UserRepository userRepository;
 
     // 매장 전체 보기
     @Transactional(readOnly = true)
@@ -35,9 +38,14 @@ public class StoreService {
     // my 매장 저장
     @Transactional
     public void saveMyStore(Long userId, MyStoreSaveRequestDto requestDto) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
+        Store store = storeRepository.findById(requestDto.getStoreId())
+                .orElseThrow(() -> new IllegalArgumentException("매장을 찾을 수 없습니다."));
+
         MyStore myStore = MyStore.builder()
-                .userId(userId)
-                .storeId(requestDto.getStoreId())
+                .user(user)
+                .store(store)
                 .build();
 
         myStoreRepository.save(myStore);
@@ -49,7 +57,7 @@ public class StoreService {
         MyStore myStore = myStoreRepository.findById(myStoreId)
                         .orElseThrow(() -> new IllegalArgumentException("MY 매장을 찾을 수 없습니다."));
 
-        if(!myStore.getUserId().equals(userId)) {
+        if(!myStore.getUser().getId().equals(userId)) {
             throw new IllegalArgumentException("이 매장을 삭제할 수 있는 권한이 없습니다.");
         }
 

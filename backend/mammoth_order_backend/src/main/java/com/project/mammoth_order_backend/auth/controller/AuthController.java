@@ -66,7 +66,7 @@ public class AuthController {
     // 현재 사용자 정보 조회
     @Operation(
             summary = "현재 사용자 정보 조회",
-            description = "현재 로그인된 사용자의 정보를 반환합니다."
+            description = "현재 로그인된 사용자의 정보를 반환합니다.\nJWT 토큰을 헤더에 포함해야 합니다."
     )
     @GetMapping("/me")
     public ResponseEntity<AuthResponseDTO.UserDTO> getCurrentUser(@AuthenticationPrincipal CustomUserDetails userDetails) {

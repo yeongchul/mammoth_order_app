@@ -28,7 +28,7 @@ public class StoreController {
     }
     
     // my 매장 보기
-    @Operation(summary = "MY 매장 조회", description = "사용자가 등록한 MY 매장 리스트를 조회합니다.")
+    @Operation(summary = "MY 매장 조회", description = "사용자가 등록한 MY 매장 리스트를 조회합니다.\nJWT 토큰을 헤더에 포함해야 합니다.")
     @GetMapping("/my")
     public ResponseEntity<List<MyStoreResponseDto>> getAllMyStores(@AuthenticationPrincipal CustomUserDetails userDetails) {
         Long userId = userDetails.getId();
@@ -37,7 +37,7 @@ public class StoreController {
     }
     
     // my 매장 저장
-    @Operation(summary = "MY 매장 추가", description = "사용자의 MY 매장 목록에 새로운 매장을 추가합니다.")
+    @Operation(summary = "MY 매장 추가", description = "사용자의 MY 매장 목록에 새로운 매장을 추가합니다.\nJWT 토큰을 헤더에 포함해야 합니다.")
     @PostMapping("/my")
     public ResponseEntity<String> addMyStore(@AuthenticationPrincipal CustomUserDetails userDetails,
                                               @RequestBody MyStoreSaveRequestDto myStoreSaveRequestDto) {
@@ -47,7 +47,7 @@ public class StoreController {
     }
     
     // my 매장 삭제
-    @Operation(summary = "MY 매장 삭제", description = "사용자의 MY 매장 목록에서 매장을 삭제합니다.")
+    @Operation(summary = "MY 매장 삭제", description = "사용자의 MY 매장 목록에서 매장을 삭제합니다.\nJWT 토큰을 헤더에 포함해야 합니다.")
     @DeleteMapping("/my/{id}")
     public ResponseEntity<String> deleteMyStore(@PathVariable("id") Long myStoreId,
                                                 @AuthenticationPrincipal CustomUserDetails userDetails) {

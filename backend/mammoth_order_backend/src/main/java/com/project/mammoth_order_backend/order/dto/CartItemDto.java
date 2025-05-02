@@ -1,6 +1,5 @@
 package com.project.mammoth_order_backend.order.dto;
 
-import com.project.mammoth_order_backend.order.entity.Cart;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -38,12 +37,12 @@ public class CartItemDto {
     private Integer productQuantity;
 
     // dto -> entity
-    public Cart toEntity() {
+    /*public Cart toEntity() {
         return Cart.builder()
-                .userId(userId)
+                .user(userId)
                 .storeId(storeId)
                 .menuId(productId)
                 .menuQuantity(productQuantity)
                 .build();
-    }
+    }*/
 }
