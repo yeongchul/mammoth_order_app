@@ -5,6 +5,7 @@ import com.project.mammoth_order_backend.order.dto.CartItemDto;
 import com.project.mammoth_order_backend.order.dto.CartResponseDto;
 import com.project.mammoth_order_backend.order.dto.CartSaveRequestDto;
 import com.project.mammoth_order_backend.order.dto.MenuResponseDto;
+import com.project.mammoth_order_backend.order.entity.Menu;
 import com.project.mammoth_order_backend.order.service.OrderService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,14 @@ public class OrderController {
     public ResponseEntity<MenuResponseDto> getMenu() {
         MenuResponseDto menuResponseDto = orderService.getMenu();
         return ResponseEntity.ok(menuResponseDto);
+    }
+
+    // 단일 메뉴 보기
+    @Operation(summary = "단일 메뉴 조회", description = "단일 메뉴 목록을 조회합니다.")
+    @GetMapping("/menus/{menuId}")
+    public ResponseEntity<Menu> getMenuById(@PathVariable("menuId") Long menuId) {
+        Menu findMenu = orderService.getMenuById(menuId);
+        return ResponseEntity.ok(findMenu);
     }
 
     // 장바구니 보기
