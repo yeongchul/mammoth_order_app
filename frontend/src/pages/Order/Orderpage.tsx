@@ -3,7 +3,7 @@ import Beveragepage from "./Beveragepage";
 import ExplainBox from "./ExplainBox";
 import Detailpage from "../Detail/Detailpage";
 import Choosecafe from "../../components/Drawer/Choosecafe";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useState } from "react";
 import { BeveragelistProps } from "../../types/common";
 import { useRef } from "react";
@@ -11,7 +11,10 @@ import { AnimatePresence } from "framer-motion";
 
 export default function Orderpage() {
   const tabRefs = useRef<(HTMLAnchorElement | null)[]>([]);
-  const { cafename } = useParams<{ cafename: string }>();
+  const { cafeid, cafename } = useParams<{
+    cafeid: string;
+    cafename: string;
+  }>();
   const [activeTab, setActiveTab] = useState<BeveragelistProps["type"]>("new");
 
   const [isDetailOpen, setIsDetailOpen] = useState(false);
@@ -46,9 +49,11 @@ export default function Orderpage() {
     setIsDetailOpen(true);
   };
 
+  const navigate = useNavigate();
+
   return (
     <div className="h-screen">
-      <OrderHeader onClose={() => history.back()} />
+      <OrderHeader onClose={() => navigate("/home")} />
       <div className="bg-[#ECECEC] h-[90%] overflow-y-auto">
         <div className="flex justify-between items-center bg-white p-2 mb-3">
           <div className="flex flex-row ml-2">
@@ -93,7 +98,9 @@ export default function Orderpage() {
           {isDetailOpen && (
             <Detailpage
               onClose={() => setIsDetailOpen(false)}
-              id={beverageId}
+              beverageid={beverageId}
+              cafeid={cafeid ? parseInt(cafeid, 10) : undefined}
+              cafename={cafename}
             />
           )}
         </AnimatePresence>

@@ -1,6 +1,6 @@
 import { BeveragelistProps, BeverageItem } from "../../types/common";
 import { useState, useEffect } from "react";
-import { fetchBeverage } from "../../services/beverageApi";
+import { fetchBeverages } from "../../services/beverageApi";
 
 interface BeveragepageProps extends BeveragelistProps {
   onOpenDetail: (id: number) => void;
@@ -15,7 +15,7 @@ export default function Beveragepage({
   useEffect(() => {
     const loadBeverage = async () => {
       try {
-        const data = await fetchBeverage();
+        const data = await fetchBeverages();
         setBeverages(data);
         console.log("new beverage:", data);
       } catch (error) {

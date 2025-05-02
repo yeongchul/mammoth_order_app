@@ -9,11 +9,28 @@ export interface BeverageItem {
 }
 
 export interface Cart {
-  BeverageId: number;
-  Cup: string;
-  ICE: boolean;
-  Size: string;
-  Milkoption?: string;
+  userId: number;
+  storeId: number;
+  menuId: number;
+  menuQuantity: number;
+  cupType?: "disposableCup" | "personalCup" | "storeCup";
+  isIce?: boolean;
+  size?: "s" | "m" | "l";
+  milkoption?: "milk" | "lowFatMilk" | "soyMilk" | "almondBreeze" | "oatSide";
+}
+
+export interface Order {
+  id: number;
+  userId: number;
+  storeId: number;
+  storeName: string;
+  productId: number;
+  productPrice: number;
+  productQuantity: number;
+  cupType?: "disposableCup" | "personalCup" | "storeCup";
+  isIce?: boolean;
+  size?: "s" | "m" | "l";
+  milkoption?: "milk" | "lowFatMilk" | "soyMilk" | "almondBreeze" | "oatSide";
 }
 
 export interface OrderLog {
@@ -59,7 +76,9 @@ export interface Logout {
   logout: () => void;
 }
 export interface DetailProps extends IsClose {
-  id: number | null;
+  beverageid: number | null;
+  cafeid: number | undefined;
+  cafename: string | undefined;
 }
 
 export type BeveragelistProps = {
@@ -71,4 +90,18 @@ export type BeveragelistProps = {
     | "teaAde"
     | "frappeBlended"
     | "food";
+};
+
+export type FrappeoptionProps = {
+  setCupType: (cup: Cart["cupType"]) => void;
+};
+
+export type CoffeeoptionProps = FrappeoptionProps & {
+  setExtraPrice: (price: number) => void;
+  setSize: (size: Cart["size"]) => void;
+  setIsIce: (isIce: boolean) => void;
+};
+
+export type MilkoptionProps = {
+  setMilkoption: (milk: Cart["milkoption"]) => void;
 };

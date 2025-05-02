@@ -2,7 +2,7 @@
 import { AnimatePresence } from "framer-motion";
 import Choosecafe from "../../components/Drawer/Choosecafe";
 import { useEffect, useState } from "react";
-import { fetchBeverage } from "../../services/beverageApi";
+import { fetchBeverages } from "../../services/beverageApi";
 import { BeverageItem } from "../../types/common";
 
 export default function RecommendBox() {
@@ -12,7 +12,7 @@ export default function RecommendBox() {
   useEffect(() => {
     const loadNewBeverage = async () => {
       try {
-        const data = await fetchBeverage();
+        const data = await fetchBeverages();
         console.log("Fetched beverage data:", data);
         setNewBeverage(data.filter((item) => item.isNewMenu === true));
         console.log("new beverage:", data);

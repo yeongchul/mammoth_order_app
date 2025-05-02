@@ -35,10 +35,10 @@ export default function MyCafelist({ onClose }: IsClose) {
       alert("MY 매장 삭제 중 오류가 발생했습니다.");
     }
   };
-  const clickCafe = (cafename: string) => {
+  const clickCafe = (cafeid: number, cafename: string) => {
     onClose();
     setTimeout(() => {
-      navigate(`/order/${cafename}`); // 애니메이션 후 페이지 이동
+      navigate(`/order/${cafeid}/${cafename}`); // 애니메이션 후 페이지 이동
     }, 500);
   };
   return (
@@ -50,7 +50,7 @@ export default function MyCafelist({ onClose }: IsClose) {
               <div
                 role="button"
                 className="flex flex-row items-center"
-                onClick={() => clickCafe(cafe.name)}
+                onClick={() => clickCafe(cafe.storeId, cafe.name)}
               >
                 <div className="flex relative justify-center items-center bg-[#5D4037] w-14 h-14 rounded-xl mr-3">
                   <img
