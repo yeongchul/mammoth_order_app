@@ -32,6 +32,14 @@ public class OrderService {
         return new MenuResponseDto(menuList);
     }
 
+    // 단일 메뉴 보기
+    @Transactional(readOnly = true)
+    public Menu getMenuById(Long menuId) {
+        Menu menu = menuRepository.findById(menuId)
+                .orElseThrow(() -> new IllegalArgumentException("메뉴를 찾을 수 없습니다."));;
+        return menu;
+    }
+
     // 장바구니 보기
     @Transactional(readOnly = true)
     public List<CartResponseDto> getCartItems(Long userId) {
