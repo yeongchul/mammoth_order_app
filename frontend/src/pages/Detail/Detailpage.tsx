@@ -1,20 +1,35 @@
 import DetailHeader from "../../components/Header/DetailHeader";
 import { motion } from "framer-motion";
 import { DetailProps } from "../../types/common";
-import { Beverage } from "../../contexts/BeverageContext";
+import { fetchBeverage } from "../../services/beverageApi";
 import Sizeexplain from "./Sizeexplain";
 import Personaloption from "./Personaloption";
 import Beverageoption from "./Beverageoption";
 import Frappeoption from "./Frappeoption";
 import Milkoption from "./Milkoption";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { BeverageItem } from "../../types/common";
 import CartBtn from "../../components/Button/CartBtn";
 import OrderBtn from "../../components/Button/OrderBtn";
 
 export default function Detailpage({ onClose, id }: DetailProps) {
-  const SelectBeverage = Beverage.filter((item) => item.Id === id);
   const [number, setNumber] = useState(1);
   const [extraPrice, setExtraPrice] = useState(0);
+  const [selectBeverage, setSelectBeverage] = useState<BeverageItem[]>([]);
+
+  useEffect(() => {
+    const loadBeverage = async () => {
+      try {
+        const data = await fetchBeverage();
+        setSelectBeverage(data.filter((item) => item.id === id));
+        console.log("new beverage:", data);
+      } catch (error) {
+        console.error("새 음료 정보를 불러오는데 실패했습니다:", error);
+      }
+    };
+
+    loadBeverage();
+  }, []);
 
   return (
     <div className="h-screen">
@@ -27,28 +42,30 @@ export default function Detailpage({ onClose, id }: DetailProps) {
       >
         <DetailHeader onClose={onClose} />
         <div className="bg-[#ECECEC] h-[90%] overflow-y-auto">
-          {SelectBeverage.map((item, index) => (
+          {selectBeverage.map((item, index) => (
             <>
               <div
                 key={index}
                 className="flex flex-col items-center bg-white shadow-sm"
               >
-                <img src={item.imgSrc} alt={item.name} className="w-[40%]" />
+                <img src={item.image} alt={item.name} className="w-[40%]" />
                 <p
                   className={`font-bold ${
-                    item.type === "food" ? "mt-0" : "mt-5"
+                    item.menuType === "food" ? "mt-0" : "mt-5"
                   }`}
                 >
                   {item.name}
                 </p>
-                {["coffee", "coldbrew", "noncoffee"].includes(item.type) && (
-                  <Beverageoption setExtraPrice={setExtraPrice} />
+                {["coffee", "coldbrew", "noncoffee"].includes(
+                  item.menuType
+                ) && <Beverageoption setExtraPrice={setExtraPrice} />}
+                {["teaade", "frappe"].includes(item.menuType) && (
+                  <Frappeoption />
                 )}
-                {["teaade", "frappe"].includes(item.type) && <Frappeoption />}
                 <Sizeexplain />
-                {item.milk && <Milkoption />}
+                {item.hasMilk && <Milkoption />}
               </div>
-              {item.type != "food" && <Personaloption />}
+              {item.menuType != "food" && <Personaloption />}
               <div className="flex justify-between items-center bg-white p-5 mt-2 shadow-sm">
                 <p className="font-bold text-sm">
                   {new Intl.NumberFormat("ko-KR").format(

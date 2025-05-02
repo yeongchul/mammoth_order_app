@@ -1,17 +1,10 @@
-// import axios from 'axios';
-// import { Menu } from './types';
+import axios from "axios";
+import { BeverageItem } from "../types/common";
+import { API_BASE_URL } from "../contexts/apiContext";
 
-// const API = axios.create({
-//   baseURL: 'http://localhost:8080/api',
-// });
-
-// // 메뉴 목록 불러오기
-// export const fetchMenus = async (): Promise<Menu[]> => {
-//   const res = await API.get<Menu[]>('/menus');
-//   return res.data;
-// };
-
-// // 메뉴 등록
-// export const addMenu = (menu: Menu): Promise<Menu> => {
-//   return API.post<Menu>('/menus', menu).then(res => res.data);
-// };
+// 메뉴 목록 불러오기
+export async function fetchBeverage(): Promise<BeverageItem[]> {
+  const res = await axios.get(`${API_BASE_URL}/order/menu`);
+  console.log("응답 전체:", res.data);
+  return res.data.menus;
+}

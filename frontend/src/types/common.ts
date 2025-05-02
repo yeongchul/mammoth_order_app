@@ -1,11 +1,11 @@
 export interface BeverageItem {
-  Id: number;
-  imgSrc: string;
+  id: number;
   name: string;
   price: number;
-  type: string;
-  new: boolean;
-  milk: boolean;
+  image: string;
+  hasMilk: boolean;
+  menuType: string;
+  isNewMenu: boolean;
 }
 
 export interface Cart {
@@ -24,6 +24,15 @@ export interface OrderLog {
 }
 
 export interface CafeList {
+  id: number;
+  name: string;
+  address: string;
+}
+
+export interface MyCafeList {
+  id: number;
+  userId: number;
+  storeId: number;
   name: string;
   address: string;
 }
@@ -33,6 +42,7 @@ export interface User {
   name: string;
   email: string;
   profileImage: string;
+  point: number;
 }
 
 export interface AuthResponse {
@@ -44,21 +54,21 @@ export interface AuthResponse {
 export interface IsClose {
   onClose: () => void;
 }
+
+export interface Logout {
+  logout: () => void;
+}
 export interface DetailProps extends IsClose {
   id: number | null;
 }
-
-export type CafelistProps = {
-  type: "nearby" | "my";
-};
 
 export type BeveragelistProps = {
   type:
     | "new"
     | "coffee"
-    | "coldbrew"
-    | "noncoffee"
-    | "teaade"
-    | "frappe"
+    | "coldBrew"
+    | "nonCoffee"
+    | "teaAde"
+    | "frappeBlended"
     | "food";
 };

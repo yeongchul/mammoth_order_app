@@ -27,7 +27,7 @@ const KakaoCallbackPage: React.FC = () => {
         login(authResponse.token, authResponse.refreshToken, authResponse.user);
 
         // 메인 페이지로 리다이렉트
-        navigate("/dashboard");
+        navigate("/home");
       } catch (error) {
         console.error("카카오 로그인 처리 중 오류 발생:", error);
         setError("로그인 처리 중 오류가 발생했습니다.");

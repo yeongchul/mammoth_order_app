@@ -13,16 +13,18 @@ export default function Orderpage() {
   const tabRefs = useRef<(HTMLAnchorElement | null)[]>([]);
   const { cafename } = useParams<{ cafename: string }>();
   const [activeTab, setActiveTab] = useState<BeveragelistProps["type"]>("new");
+
   const [isDetailOpen, setIsDetailOpen] = useState(false);
   const [beverageId, setBeverageId] = useState<number | null>(null);
+  const [isOpen, setIsOpen] = useState(false);
 
   const typeLabels: Record<BeveragelistProps["type"], string> = {
     new: "NEW",
     coffee: "커피",
-    coldbrew: "콜드브루",
-    noncoffee: "논 커피",
-    teaade: "티/에이드",
-    frappe: "프라페/블렌디드",
+    coldBrew: "콜드브루",
+    nonCoffee: "논 커피",
+    teaAde: "티/에이드",
+    frappeBlended: "프라페/블렌디드",
     food: "디저트",
   };
 
@@ -44,7 +46,6 @@ export default function Orderpage() {
     setIsDetailOpen(true);
   };
 
-  const [isOpen, setIsOpen] = useState(false);
   return (
     <div className="h-screen">
       <OrderHeader onClose={() => history.back()} />

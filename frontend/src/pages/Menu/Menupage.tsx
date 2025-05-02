@@ -2,8 +2,17 @@ import CloseHeader from "../../components/Header/CloseHeader";
 import { motion } from "framer-motion";
 import { IsClose } from "../../types/common";
 import Menulist from "./Menulist";
+import { useAuth } from "../../contexts/AutoContext";
+import { useNavigate } from "react-router-dom";
 
 export default function Menupage({ onClose }: IsClose) {
+  const { logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate("/login");
+  };
   return (
     <motion.div
       className="fixed inset-0 bg-white z-50"
@@ -19,7 +28,10 @@ export default function Menupage({ onClose }: IsClose) {
             <p className="text-xl font-extrabold">정채빈</p>
             <p className="mt-1">님</p>
           </div>
-          <button className="ml-1 text-gray-400 font-semibold text-[10px]">
+          <button
+            className="ml-1 text-gray-400 font-semibold text-[10px]"
+            onClick={handleLogout}
+          >
             계정설정 &gt;
           </button>
         </div>

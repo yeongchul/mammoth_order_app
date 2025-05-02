@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { IsClose } from "../../types/common";
 import Cafelist from "./Cafelist";
+import MyCafelist from "./MyCafelist";
 import ChoosecafeHeader from "../Header/ChoosecafeHeader";
 import { useState } from "react";
 
@@ -37,9 +38,9 @@ export default function Choosecafe({ onClose }: IsClose) {
             </div>
             <div>
               {activeTab === "nearby" ? (
-                <Cafelist type="nearby" onClose={onClose} />
+                <Cafelist onClose={onClose} />
               ) : (
-                <Cafelist type="my" onClose={onClose} />
+                <MyCafelist onClose={onClose} />
               )}
             </div>
           </div>
