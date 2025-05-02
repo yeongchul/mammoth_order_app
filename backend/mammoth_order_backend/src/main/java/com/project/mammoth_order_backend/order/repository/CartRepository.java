@@ -1,10 +1,7 @@
 package com.project.mammoth_order_backend.order.repository;
 
-import com.project.mammoth_order_backend.order.dto.CartItemDto;
 import com.project.mammoth_order_backend.order.entity.Cart;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -12,7 +9,7 @@ import java.util.List;
 @Repository
 public interface CartRepository extends JpaRepository<Cart, Long> {
 
-    @Query("SELECT new com.project.mammoth_order_backend.order.dto.CartItemDto(" +
+    /*@Query("SELECT new com.project.mammoth_order_backend.order.dto.CartResponseDto(" +
             "c.id," +
             "c.userId, " +
             "c.storeId, " +
@@ -25,5 +22,7 @@ public interface CartRepository extends JpaRepository<Cart, Long> {
             "JOIN Menu m ON c.menuId = m.id " +
             "JOIN Store s ON c.storeId = s.id " +
             "WHERE c.userId = :userId")
-    List<CartItemDto> findCartItemDto(@Param("userId") Long userId);
+    List<CartItemDto> findCartResponseDto(@Param("userId") Long userId);*/
+
+    List<Cart> findAllByUserId(Long userId);
 }
