@@ -27,7 +27,7 @@ public class StoreService {
 
     // my 매장 보기
     @Transactional(readOnly = true)
-    public List<MyStoreResponseDto> getMyStore(Long userId) {
+    public List<MyStoreResponseDto> getAllMyStores(Long userId) {
         List<MyStoreResponseDto> myStoreList = myStoreRepository.findMyStoreResponseDto(userId);
         return myStoreList;
     }
@@ -45,7 +45,14 @@ public class StoreService {
 
     // my 매장 삭제
     @Transactional
-    public void deleteMyStore(Long myStoreId) {
+    public void deleteMyStore(Long myStoreId, Long userId) {
+        MyStore myStore = myStoreRepository.findById(myStoreId)
+                        .orElseThrow(() -> new IllegalArgumentException("MY 매장을 찾을 수 없습니다."));
+
+        if(!myStore.getUserId().equals(userId)) {
+            throw new IllegalArgumentException("이 매장을 삭제할 수 있는 권한이 없습니다.");
+        }
+
         myStoreRepository.deleteById(myStoreId);
     }
 }
