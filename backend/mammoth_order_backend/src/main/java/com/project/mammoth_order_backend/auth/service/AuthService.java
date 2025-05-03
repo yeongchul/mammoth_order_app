@@ -7,6 +7,7 @@ import com.project.mammoth_order_backend.auth.repository.UserRepository;
 import com.project.mammoth_order_backend.auth.security.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +22,7 @@ public class AuthService {
     private final KakaoService kakaoService;
     private final UserRepository userRepository;
     private final JwtTokenProvider jwtTokenProvider;
+    private final RedisTemplate<String, String> redisTemplate;
 
     @Transactional
     public AuthResponseDTO kakaoLogin(String code) {
@@ -154,4 +156,51 @@ public class AuthService {
                 .point(user.getPoint())
                 .build();
     }
+
+    /*@Transactional
+    public void logout(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
+
+        // DB에 저장된 리프레시 토큰 삭제 (혹은 null로 설정)
+        user.setRefreshToken(null);
+        userRepository.save(user);
+
+        //log.info("User with ID {} has logged out.", userId);
+    }*/
+    @Transactional
+    public void logout(String token, Long userId) {
+        // 1. 리프레시 토큰 제거
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
+        user.setRefreshToken(null);
+        userRepository.save(user);
+
+        // 2. accessToken을 블랙리스트에 등록
+        //long expiration = jwtTokenProvider.getExpiration(token); // 남은 만료 시간 (ms)
+        //redisTemplate.opsForValue().set(token, "logout", expiration, TimeUnit.MILLISECONDS);
+
+        //log.info("Access token 블랙리스트 등록 완료");
+    }
+    /*public void logout(String accessToken) {
+        // "Bearer " 접두사 제거
+        if (accessToken.startsWith("Bearer ")) {
+            accessToken = accessToken.substring(7);
+        }
+
+        // 토큰 유효성 검사
+        if (!jwtTokenProvider.validateToken(accessToken)) {
+            throw new IllegalArgumentException("유효하지 않은 토큰입니다.");
+        }
+
+        // 토큰 남은 유효 시간(ms)
+        long expiration = jwtTokenProvider.getExpiration(accessToken);
+
+        // Redis에 블랙리스트 등록 (key: token, value: "logout")
+        redisTemplate.opsForValue().set(accessToken, "logout", expiration, TimeUnit.MILLISECONDS);
+    }
+
+    public boolean isLogoutToken(String token) {
+        return redisTemplate.hasKey(token);
+    }*/
 }
