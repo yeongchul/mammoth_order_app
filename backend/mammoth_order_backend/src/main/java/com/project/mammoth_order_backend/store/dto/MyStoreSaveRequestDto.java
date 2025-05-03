@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MyStoreSaveRequestDto {
-    @Schema(description = "매장 ID")
+    @Schema(description = "매장 ID", example = "1")
     private Long storeId;
 }
