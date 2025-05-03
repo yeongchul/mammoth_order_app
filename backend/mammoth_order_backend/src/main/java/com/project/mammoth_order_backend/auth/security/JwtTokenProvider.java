@@ -128,4 +128,15 @@ public class JwtTokenProvider {
                 .getPayload()
                 .get("id").toString());
     }
+
+    public long getExpiration(String token) {
+        Claims claims = Jwts.parser()
+                .verifyWith(key)
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
+
+        Date expiration = claims.getExpiration();
+        return expiration.getTime() - System.currentTimeMillis(); // 남은 시간(ms)
+    }
 }
