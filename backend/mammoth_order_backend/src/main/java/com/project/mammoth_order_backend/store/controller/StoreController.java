@@ -3,6 +3,7 @@ package com.project.mammoth_order_backend.store.controller;
 import com.project.mammoth_order_backend.auth.security.CustomUserDetails;
 import com.project.mammoth_order_backend.store.dto.MyStoreResponseDto;
 import com.project.mammoth_order_backend.store.dto.MyStoreSaveRequestDto;
+import com.project.mammoth_order_backend.store.dto.StoreNameResponseDto;
 import com.project.mammoth_order_backend.store.entity.Store;
 import com.project.mammoth_order_backend.store.service.StoreService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -25,6 +26,14 @@ public class StoreController {
     public ResponseEntity<List<Store>> getAllStores() {
         List<Store> storeList = storeService.getAllStores();
         return ResponseEntity.ok(storeList);
+    }
+
+    // 매장 이름 조회
+    @Operation(summary = "매장 이름 조회", description = "storeId를 통해 해당 매장의 이름을 반환합니다.")
+    @GetMapping("/{id}")
+    public ResponseEntity<StoreNameResponseDto> getStoreName(@PathVariable("id") Long storeId) {
+        StoreNameResponseDto storeName = storeService.getStoreName(storeId);
+        return ResponseEntity.ok(storeName);
     }
     
     // my 매장 보기
