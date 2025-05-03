@@ -4,6 +4,7 @@ import com.project.mammoth_order_backend.auth.entity.User;
 import com.project.mammoth_order_backend.auth.repository.UserRepository;
 import com.project.mammoth_order_backend.store.dto.MyStoreResponseDto;
 import com.project.mammoth_order_backend.store.dto.MyStoreSaveRequestDto;
+import com.project.mammoth_order_backend.store.dto.StoreNameResponseDto;
 import com.project.mammoth_order_backend.store.entity.MyStore;
 import com.project.mammoth_order_backend.store.entity.Store;
 import com.project.mammoth_order_backend.store.repository.MyStoreRepository;
@@ -26,6 +27,16 @@ public class StoreService {
     public List<Store> getAllStores() {
         List<Store> storeList = storeRepository.findAll();
         return storeList;
+    }
+
+    // 매장 이름 반환
+    @Transactional(readOnly = true)
+    public StoreNameResponseDto getStoreName(Long storeId) {
+        String storeName = storeRepository.findById(storeId)
+                .orElseThrow(() -> new RuntimeException("가게를 찾을 수 없습니다."))
+                .getName();
+        StoreNameResponseDto nameResponse = new StoreNameResponseDto(storeName);
+        return nameResponse;
     }
 
     // my 매장 보기
