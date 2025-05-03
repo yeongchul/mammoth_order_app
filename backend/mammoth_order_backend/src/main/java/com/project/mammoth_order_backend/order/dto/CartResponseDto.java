@@ -13,42 +13,42 @@ import lombok.*;
 @Builder
 @Schema(description = "장바구니 항목에 대한 응답 DTO")
 public class CartResponseDto {
-    @Schema(description = "장바구니 항목 ID")
+    @Schema(description = "장바구니 항목 ID", example = "216")
     private Long id;
 
-    @Schema(description = "사용자 ID")
+    @Schema(description = "사용자 ID", example = "6")
     private Long userId;
 
-    @Schema(description = "매장 ID")
+    @Schema(description = "매장 ID", example = "2")
     private Long storeId;
 
-    @Schema(description = "매장 이름")
+    @Schema(description = "매장 이름", example = "중림한국경제점")
     private String storeName;
 
-    @Schema(description = "메뉴 ID")
+    @Schema(description = "메뉴 ID", example = "1")
     private Long menuId;
 
-    @Schema(description = "메뉴 이름")
+    @Schema(description = "메뉴 이름", example = "아메리카노")
     private String menuName;
 
     @Schema(description = "메뉴 이미지 URL")
     private String menuImage;
 
-    @Schema(description = "주문 수량")
+    @Schema(description = "주문 수량", example = "1")
     private Integer menuQuantity;
 
-    @Schema(description = "사이즈에 따라 계산된 메뉴 가격")
+    @Schema(description = "사이즈에 따라 계산된 메뉴 가격", example = "1600")
     private Integer menuPrice;
 
-    @Schema(description = "컵 종류 (예: 일회용컵, 개인컵, 매장컵)")
+    @Schema(description = "컵 종류 (예: 일회용컵, 개인컵, 매장컵)", example = "personalCup")
     private CupType cupType;
 
-    @Schema(description = "아이스 여부")
+    @Schema(description = "아이스 여부", example = "true")
     private Boolean isIce;
 
-    @Schema(description = "사이즈 (예: s, m, l)")
+    @Schema(description = "사이즈 (예: s, m, l)", example = "m")
     private Size size;
 
-    @Schema(description = "우유 종류 (예: 일반, 저지방, 두유 등)")
+    @Schema(description = "우유 종류 (예: 일반, 저지방, 두유 등)", example = "oatSide")
     private MilkType milkType;
 }

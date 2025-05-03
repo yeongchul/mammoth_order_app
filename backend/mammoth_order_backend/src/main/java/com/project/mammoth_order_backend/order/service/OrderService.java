@@ -2,10 +2,7 @@ package com.project.mammoth_order_backend.order.service;
 
 import com.project.mammoth_order_backend.auth.entity.User;
 import com.project.mammoth_order_backend.auth.repository.UserRepository;
-import com.project.mammoth_order_backend.order.dto.CartItemDto;
-import com.project.mammoth_order_backend.order.dto.CartResponseDto;
-import com.project.mammoth_order_backend.order.dto.CartSaveRequestDto;
-import com.project.mammoth_order_backend.order.dto.MenuResponseDto;
+import com.project.mammoth_order_backend.order.dto.*;
 import com.project.mammoth_order_backend.order.entity.Cart;
 import com.project.mammoth_order_backend.order.entity.Menu;
 import com.project.mammoth_order_backend.order.enumeration.Size;
@@ -167,16 +164,50 @@ public class OrderService {
         }
     }
 
-    // 바로 구매
+    // 바로 구매 조회
+    @Transactional(readOnly = true)
+    public BuyNowResponseDto getBuyNow(Long userId, BuyNowRequestDto buyNowRequestDto) {
+        Store foundStore = storeRepository.findById(buyNowRequestDto.getStoreId())
+                .orElseThrow(() -> new IllegalArgumentException("매장을 찾을 수 없습니다."));
+        
+        Menu foundMenu = menuRepository.findById(buyNowRequestDto.getMenuId())
+                .orElseThrow(() -> new IllegalArgumentException("메뉴를 찾을 수 없습니다."));
+
+        int menuPrice = foundMenu.getPrice();
+        menuPrice = calculateMenuPriceWithSize(menuPrice, buyNowRequestDto.getSize());
+
+        BuyNowResponseDto buyNowResponseDto = BuyNowResponseDto.builder()
+                .userId(userId)
+                .storeId(buyNowRequestDto.getStoreId())
+                .storeName(foundStore.getName())
+                .menuId(buyNowRequestDto.getMenuId())
+                .menuName(foundMenu.getName())
+                .menuImage(foundMenu.getImage())
+                .menuQuantity(buyNowRequestDto.getMenuQuantity())
+                .menuPrice(menuPrice)
+                .cupType(buyNowRequestDto.getCupType())
+                .isIce(buyNowRequestDto.getIsIce())
+                .size(buyNowRequestDto.getSize())
+                .milkType(buyNowRequestDto.getMilkType())
+                .build();
+        return buyNowResponseDto;
+    }
+
+    // 바로 구매 포인트 적립
     @Transactional
-    public int buyNow(CartItemDto cartItemDto) {
+    public int purchaseBuyNow(Long userId, MenuPurchaseDTO menuPurchaseDTO) {
+        // 메뉴 조회
+        Menu menu = menuRepository.findById(menuPurchaseDTO.getMenuId())
+                .orElseThrow(() -> new IllegalArgumentException("메뉴를 찾을 수 없습니다."));
+
         // 사용자 조회
-        Long userId = cartItemDto.getUserId();
         User foundUser = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
 
         // 포인트 계산
-        int earnedPoint = (int)(cartItemDto.getProductPrice() * 0.03);
+        int menuPrice = menu.getPrice();
+        menuPrice = calculateMenuPriceWithSize(menuPrice, menuPurchaseDTO.getSize());
+        int earnedPoint = (int)(menuPrice * 0.03);
         int newPoint = foundUser.getPoint() + earnedPoint;
         userRepository.updateUserPoint(userId, newPoint);
 
