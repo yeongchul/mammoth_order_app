@@ -34,4 +34,13 @@ public class Menu {
 
     @Column(nullable = false)
     private Boolean isNewMenu = false;
+
+    public void update(String name, Integer price, String image, Boolean hasMilk, MenuType menuType, Boolean isNewMenu) {
+        this.name = name;
+        this.price = price;
+        this.image = image;
+        this.hasMilk = hasMilk;
+        this.menuType = menuType;
+        this.isNewMenu = isNewMenu;
+    }
 }
