@@ -60,7 +60,7 @@ CREATE TABLE cart (
     size ENUM('s', 'm', 'l'),
     milk_type ENUM('milk', 'lowFatMilk', 'soyMilk', 'almondBreeze', 'oatSide'),
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-    FOREIGN KEY (store_id) REFERENCES stores(id) ON DELETE CASCADE,
+    FOREIGN KEY (store_id) REFERENCES store(id) ON DELETE CASCADE,
     FOREIGN KEY (menu_id) REFERENCES menu(id) ON DELETE CASCADE
 );
 
@@ -114,7 +114,7 @@ insert into menu(id, name, price, image, has_milk, menu_type, is_new_menu) value
 insert into menu(id, name, price, image, has_milk, menu_type, is_new_menu) values
 (0, "복숭아 아이스티", 3000, "https://mmthcoffee.com/files/menu/ba3e649b4375c729b825e61ef6ea4801.png", false, "teaAde", false),
 (0, "제로 복숭아 아이스티", 3000, "https://mmthcoffee.com/files/menu/db3b34e0696ffd644ab72ec43a0bd51a.png", false, "teaAde", false),
-(0, "히비스커스 유자티", 3500, "https://mmthcoffee.com/files/menu/61064d9088551455dd71989baad7bfbb.png", false, "teaAde"),
+(0, "히비스커스 유자티", 3500, "https://mmthcoffee.com/files/menu/61064d9088551455dd71989baad7bfbb.png", false, "teaAde", false),
 (0, "페퍼민트티", 3700, "https://mmthcoffee.com/files/menu/28a0999fed4b2f983f2023ccdf810ca2.png", false, "teaAde", false),
 (0, "레몬밤 민트티", 3500, "https://mmthcoffee.com/files/menu/6c5d59b38e6b119135d58d3e9a2b859f.png", false, "teaAde", false),
 (0, "유자 티 / 에이드", 2300, "https://mmthcoffee.com/files/menu/a97e5d7c2e68a1a25c7873e2496855ae.png", false, "teaAde", false),
