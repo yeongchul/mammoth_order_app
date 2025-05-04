@@ -1,20 +1,81 @@
 import DetailHeader from "../../components/Header/DetailHeader";
 import { motion } from "framer-motion";
-import { DetailProps } from "../../types/common";
-import { Beverage } from "../../contexts/BeverageContext";
+import { Cart, DetailProps, User } from "../../types/common";
+import { fetchBeverage } from "../../services/beverageApi";
 import Sizeexplain from "./Sizeexplain";
 import Personaloption from "./Personaloption";
 import Beverageoption from "./Beverageoption";
 import Frappeoption from "./Frappeoption";
 import Milkoption from "./Milkoption";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { BeverageItem } from "../../types/common";
 import CartBtn from "../../components/Button/CartBtn";
 import OrderBtn from "../../components/Button/OrderBtn";
+import { useNavigate, useParams } from "react-router-dom";
+import { apiService } from "../../services/loginApi";
 
-export default function Detailpage({ onClose, id }: DetailProps) {
-  const SelectBeverage = Beverage.filter((item) => item.Id === id);
+export default function Detailpage({
+  onClose,
+  beverageid,
+  cafeid,
+  cafename,
+}: DetailProps) {
+  const navigate = useNavigate();
+
+  const [user, setUser] = useState<User | null>(null);
   const [number, setNumber] = useState(1);
+
   const [extraPrice, setExtraPrice] = useState(0);
+  const [selectBeverage, setSelectBeverage] = useState<BeverageItem>();
+  const [size, setSize] = useState<"s" | "m" | "l">("m");
+  const [cupType, setCupType] = useState<
+    "disposableCup" | "personalCup" | "storeCup"
+  >("disposableCup");
+  const [isIce, setIsIce] = useState<boolean>(true);
+  const [milkoption, setMilkoption] = useState<
+    "milk" | "lowFatMilk" | "soyMilk" | "almondBreeze" | "oatSide"
+  >("milk");
+
+  const [addCart, setAddCart] = useState<Cart>();
+
+  useEffect(() => {
+    if (!selectBeverage || !cafeid) return;
+    const loadUser = async () => {
+      try {
+        const data = await apiService.getCurrentUser();
+        setUser(data);
+        console.log("user state:", data);
+      } catch (error) {
+        console.error("사용자 정보를 불러오는데 실패했습니다:", error);
+      }
+    };
+    const loadBeverage = async (beverageid: number | null) => {
+      if (beverageid) {
+        try {
+          const data = await fetchBeverage(beverageid);
+          setSelectBeverage(data);
+          console.log("new beverage:", data);
+        } catch (error) {
+          console.error("새 음료 정보를 불러오는데 실패했습니다:", error);
+        }
+      }
+    };
+    loadUser();
+
+    if (user?.id)
+      setAddCart({
+        userId: user?.id,
+        storeId: cafeid,
+        menuId: selectBeverage.id,
+        menuQuantity: number,
+        cupType: cupType,
+        isIce: isIce,
+        size: size,
+        milkoption: milkoption,
+      });
+
+    loadBeverage(beverageid);
+  }, [selectBeverage, cafeid, number, cupType, isIce, size, milkoption]);
 
   return (
     <div className="h-screen">
@@ -27,32 +88,35 @@ export default function Detailpage({ onClose, id }: DetailProps) {
       >
         <DetailHeader onClose={onClose} />
         <div className="bg-[#ECECEC] h-[90%] overflow-y-auto">
-          {SelectBeverage.map((item, index) => (
+          {selectBeverage != undefined && (
             <>
-              <div
-                key={index}
-                className="flex flex-col items-center bg-white shadow-sm"
-              >
-                <img src={item.imgSrc} alt={item.name} className="w-[40%]" />
+              <div className="flex flex-col items-center bg-white shadow-sm">
+                <img
+                  src={selectBeverage.image}
+                  alt={selectBeverage.name}
+                  className="w-[40%]"
+                />
                 <p
                   className={`font-bold ${
-                    item.type === "food" ? "mt-0" : "mt-5"
+                    selectBeverage.menuType === "food" ? "mt-0" : "mt-5"
                   }`}
                 >
-                  {item.name}
+                  {selectBeverage.name}
                 </p>
-                {["coffee", "coldbrew", "noncoffee"].includes(item.type) && (
-                  <Beverageoption setExtraPrice={setExtraPrice} />
-                )}
-                {["teaade", "frappe"].includes(item.type) && <Frappeoption />}
+                {["coffee", "coldBrew", "nonCoffee"].includes(
+                  selectBeverage.menuType
+                ) && <Beverageoption setExtraPrice={setExtraPrice} />}
+                {["teaAde", "frappeBlended"].includes(
+                  selectBeverage.menuType
+                ) && <Frappeoption setCupType={setCupType} />}
                 <Sizeexplain />
-                {item.milk && <Milkoption />}
+                {selectBeverage.hasMilk && <Milkoption />}
               </div>
-              {item.type != "food" && <Personaloption />}
+              {selectBeverage.menuType != "food" && <Personaloption />}
               <div className="flex justify-between items-center bg-white p-5 mt-2 shadow-sm">
                 <p className="font-bold text-sm">
                   {new Intl.NumberFormat("ko-KR").format(
-                    (item.price + extraPrice) * number
+                    (selectBeverage.price + extraPrice) * number
                   )}
                   원
                 </p>
@@ -97,19 +161,19 @@ export default function Detailpage({ onClose, id }: DetailProps) {
                   <p className="text-sm">주문금액</p>
                   <p className="font-bold text-sm text-red-700">
                     {new Intl.NumberFormat("ko-KR").format(
-                      (item.price + extraPrice) * number
+                      (selectBeverage.price + extraPrice) * number
                     )}
                     원
                   </p>
                 </div>
 
                 <div className="flex flex-row justify-between items-center ">
-                  <CartBtn />
+                  {addCart && <CartBtn onClose={onClose} addCart={addCart} />}
                   <OrderBtn />
                 </div>
               </div>
             </>
-          ))}
+          )}
         </div>
       </motion.div>
     </div>

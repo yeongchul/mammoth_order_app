@@ -1,12 +1,29 @@
 //이달의 추천 메뉴 박스
 import { AnimatePresence } from "framer-motion";
 import Choosecafe from "../../components/Drawer/Choosecafe";
-import { useState } from "react";
-import { Beverage } from "../../contexts/BeverageContext";
+import { useEffect, useState } from "react";
+import { fetchBeverages } from "../../services/beverageApi";
+import { BeverageItem } from "../../types/common";
 
 export default function RecommendBox() {
   const [isOpen, setIsOpen] = useState(false);
-  const newBeverage = Beverage.filter((item) => item.new === true);
+  const [newBeverage, setNewBeverage] = useState<BeverageItem[]>([]);
+
+  useEffect(() => {
+    const loadNewBeverage = async () => {
+      try {
+        const data = await fetchBeverages();
+        console.log("Fetched beverage data:", data);
+        setNewBeverage(data.filter((item) => item.isNewMenu === true));
+        console.log("new beverage:", data);
+      } catch (error) {
+        console.error("새 음료 정보를 불러오는데 실패했습니다:", error);
+      }
+    };
+
+    loadNewBeverage();
+  }, []);
+
   return (
     <div className="pl-4 pt-1 pr-4 pb-4">
       <div className="flex justify-between items-center">
@@ -25,7 +42,7 @@ export default function RecommendBox() {
             key={index}
             className="carousel-item flex flex-col pl-2 pr-2 items-center"
           >
-            <img src={items.imgSrc} alt={items.name} className="w-28 h-28" />
+            <img src={items.image} alt={items.name} className="w-28 h-28" />
             <p className="mt-3 text-xs">{items.name}</p>
             <div className="flex flex-row mt-3 ">
               <p className="text-md font-semibold">

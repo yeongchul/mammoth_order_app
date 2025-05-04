@@ -1,4 +1,5 @@
 import { IsClose } from "../../types/common";
+
 export default function OrderHeader({ onClose }: IsClose) {
   return (
     <div className="flex justify-between items-center p-2 pl-1 pr-1 h-12">

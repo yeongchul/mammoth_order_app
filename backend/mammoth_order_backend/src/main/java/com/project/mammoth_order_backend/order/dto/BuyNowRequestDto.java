@@ -7,14 +7,12 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Getter
-@Setter
-@NoArgsConstructor
 @AllArgsConstructor
-@Schema(description = "장바구니에 항목을 추가할 때 사용하는 요청 DTO")
-public class CartSaveRequestDto {
+@NoArgsConstructor
+@Schema(description = "바로 구매 항목을 추가할 때 사용하는 요청 DTO")
+public class BuyNowRequestDto {
     @Schema(description = "매장 ID", example = "1")
     private Long storeId;
 

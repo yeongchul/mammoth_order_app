@@ -4,18 +4,17 @@ import com.project.mammoth_order_backend.order.enumeration.CupType;
 import com.project.mammoth_order_backend.order.enumeration.MilkType;
 import com.project.mammoth_order_backend.order.enumeration.Size;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Schema(description = "장바구니 항목에 대한 응답 DTO")
-public class CartResponseDto {
-    @Schema(description = "장바구니 항목 ID", example = "216")
-    private Long id;
-
+@Schema(description = "바로 구매 항목을 보여줄 때 사용하는 요청 DTO")
+public class BuyNowResponseDto {
     @Schema(description = "사용자 ID", example = "6")
     private Long userId;
 
@@ -40,7 +39,7 @@ public class CartResponseDto {
     @Schema(description = "사이즈에 따라 계산된 메뉴 가격", example = "1600")
     private Integer menuPrice;
 
-    @Schema(description = "컵 종류 (예: 일회용컵, 개인컵, 매장컵)", example = "personalCup")
+    @Schema(description = "컵 종류 (예: 일회용컵, 개인컵, 매장컵)", example = "disposableCup")
     private CupType cupType;
 
     @Schema(description = "아이스 여부", example = "true")
@@ -49,6 +48,6 @@ public class CartResponseDto {
     @Schema(description = "사이즈 (예: s, m, l)", example = "m")
     private Size size;
 
-    @Schema(description = "우유 종류 (예: 일반, 저지방, 두유 등)", example = "oatSide")
+    @Schema(description = "우유 종류 (예: 일반, 저지방, 두유 등)", example = "almondBreeze")
     private MilkType milkType;
 }

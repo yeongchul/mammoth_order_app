@@ -4,11 +4,13 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
-@NoArgsConstructor
+@Setter
 @AllArgsConstructor
-public class MyStoreSaveRequestDto {
-    @Schema(description = "매장 ID", example = "1")
-    private Long storeId;
+@NoArgsConstructor
+public class StoreNameResponseDto {
+    @Schema(description = "매장 이름", example = "중림한국경제점")
+    private String name;
 }

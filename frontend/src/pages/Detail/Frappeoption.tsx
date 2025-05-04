@@ -1,30 +1,45 @@
 import { useState } from "react";
+import { FrappeoptionProps } from "../../types/common";
 
-export default function Frappeoption() {
-  const [selectedCup, setSelectedCup] = useState("일회용컵 사용");
+type CupTypeKeys = "일회용컵 사용" | "개인컵 사용" | "매장컵(먹고 갈게요)";
+type CupTypeValues = "disposableCup" | "personalCup" | "storeCup";
+type CupTypeMapping = {
+  [key in CupTypeKeys]: CupTypeValues;
+};
+
+export default function Frappeoption({ setCupType }: FrappeoptionProps) {
+  const cupTypeMapping: CupTypeMapping = {
+    "일회용컵 사용": "disposableCup",
+    "개인컵 사용": "personalCup",
+    "매장컵(먹고 갈게요)": "storeCup",
+  };
+
+  const [selectedCup, setSelectedCup] = useState<CupTypeKeys>("일회용컵 사용");
+
   const sizePrice: number = 0;
   return (
     <div className="p-5 w-full">
       <div>
         <p className="font-bold text-sm">컵 선택</p>
         <div className="flex flex-row text-gray-400">
-          {["일회용컵 사용", "개인컵 사용", "매장컵(먹고 갈게요)"].map(
-            (cup) => (
-              <div
-                key={cup}
-                role="button"
-                onClick={() => setSelectedCup(cup)}
-                className={`flex items-center justify-center border-2 font-bold text-xs mt-3 mr-1 p-2.5 rounded-lg cursor-pointer
+          {(Object.keys(cupTypeMapping) as CupTypeKeys[]).map((cup, index) => (
+            <div
+              key={index}
+              role="button"
+              onClick={() => {
+                setSelectedCup(cup);
+                setCupType(cupTypeMapping[cup]);
+              }}
+              className={`flex items-center justify-center border-2 font-bold text-xs mt-3 mr-1 p-2.5 rounded-lg cursor-pointer
                     ${
                       selectedCup === cup
                         ? "text-white border-[#403535] bg-[#403535]"
                         : "border-gray-200"
                     }`}
-              >
-                {cup}
-              </div>
-            )
-          )}
+            >
+              {index}
+            </div>
+          ))}
         </div>
       </div>
       <div className="mt-10">

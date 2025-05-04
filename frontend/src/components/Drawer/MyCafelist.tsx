@@ -1,39 +1,38 @@
 import { useEffect, useState } from "react";
-import { CafeList, IsClose } from "../../types/common";
+import { MyCafeList, IsClose } from "../../types/common";
 import { useNavigate } from "react-router-dom";
 import mammothLogo from "../../assets/logo/mammoth_logo_notext.png";
-import { fetchCafe, fetchMyCafe, addMyCafe } from "../../services/storeApi";
+import { fetchMyCafe, deleteMyCafe } from "../../services/storeApi";
 
-export default function Cafelist({ onClose }: IsClose) {
-  const [cafe, setCafe] = useState<CafeList[]>([]);
+export default function MyCafelist({ onClose }: IsClose) {
+  const [myCafe, setMyCafe] = useState<MyCafeList[]>([]);
   const [bookmarkIds, setBookmarkIds] = useState<Set<number>>(new Set());
   const navigate = useNavigate();
 
   useEffect(() => {
-    const loadCafe = async () => {
+    const loadMyCafe = async () => {
       try {
-        const cafeData = await fetchCafe();
         const myCafeData = await fetchMyCafe();
-        setCafe(cafeData);
-        setBookmarkIds(new Set(myCafeData.map((c) => c.storeId)));
+        setMyCafe(myCafeData);
+        setBookmarkIds(new Set(myCafeData.map((c) => c.id)));
       } catch (error) {
         console.error("카페 정보를 불러오는데 실패했습니다:", error);
       }
     };
-    loadCafe();
+    loadMyCafe();
   }, []);
 
-  const clickBookmark = async (storeId: number) => {
+  const clickBookmark = async (myStoreId: number) => {
     try {
-      const isBookmark = bookmarkIds.has(storeId);
-
-      if (!isBookmark) {
-        await addMyCafe(storeId);
-        alert("MY 매장에 추가되었습니다.");
-        setBookmarkIds((prev) => new Set(prev).add(storeId));
-      }
+      await deleteMyCafe(myStoreId);
+      alert("MY 매장에서 삭제되었습니다.");
+      setBookmarkIds((prev) => {
+        const updated = new Set(prev);
+        updated.delete(myStoreId);
+        return updated;
+      });
     } catch (error) {
-      alert("MY 매장 추가 중 오류가 발생했습니다.");
+      alert("MY 매장 삭제 중 오류가 발생했습니다.");
     }
   };
   const clickCafe = (cafeid: number, cafename: string) => {
@@ -45,27 +44,13 @@ export default function Cafelist({ onClose }: IsClose) {
   return (
     <div className="flex flex-col">
       <div>
-        <div className="flex justify-between bg-[#F4F4F4] p-3.5 items-center mt-0.5">
-          <p className="text-sm font-medium text-gray-600">
-            내 위치로부터 반경 2km 이내의 매장입니다.
-          </p>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            height="24px"
-            viewBox="0 -960 960 960"
-            width="24px"
-            fill="#545454"
-          >
-            <path d="M480-160q-134 0-227-93t-93-227q0-134 93-227t227-93q69 0 132 28.5T720-690v-110h80v280H520v-80h168q-32-56-87.5-88T480-720q-100 0-170 70t-70 170q0 100 70 170t170 70q77 0 139-44t87-116h84q-28 106-114 173t-196 67Z" />
-          </svg>
-        </div>
         <ul className="mb-6">
-          {cafe.map((cafe, index) => (
+          {myCafe.map((cafe, index) => (
             <li key={index} className="p-2 border-b-2 border-gray-100">
               <div
                 role="button"
                 className="flex flex-row items-center"
-                onClick={() => clickCafe(cafe.id, cafe.name)}
+                onClick={() => clickCafe(cafe.storeId, cafe.name)}
               >
                 <div className="flex relative justify-center items-center bg-[#5D4037] w-14 h-14 rounded-xl mr-3">
                   <img

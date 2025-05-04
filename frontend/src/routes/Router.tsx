@@ -1,19 +1,26 @@
 import { Routes, Route } from "react-router-dom";
 import Homepage from "../pages/Home/Homepage";
-import Beveragepage from "../pages/Order/Beveragepage";
-// import Cartpage from "../pages/Cart/Cartpage";
+import Cartpage from "../pages/Cart/Cartpage";
 import Loginpage from "../pages/Login/Loginpage";
 import Startpage from "../pages/Start/Startpage";
 import Orderpage from "../pages/Order/Orderpage";
+import PrivateRoute from "../components/KakaoLogin/PrivateRoute";
+import KakaoCallbackPage from "../components/KakaoLogin/KakaoCallbackPage";
 
 const Router = () => {
   return (
     <Routes>
-      <Route path="/" element={<Startpage />} />
-      <Route path="/home" element={<Homepage />} />
-      {/* <Route path="/cart" element={<Cartpage />} /> */}
+      {/* 공개 라우트 */}
       <Route path="/login" element={<Loginpage />} />
-      <Route path="/order/:cafename" element={<Orderpage />} />
+      <Route path="/oauth/kakao/callback" element={<KakaoCallbackPage />} />
+      <Route path="/" element={<Startpage />} />
+
+      {/* 인증 필요 라우트 */}
+      <Route element={<PrivateRoute />}>
+        <Route path="/home" element={<Homepage />} />
+        <Route path="/cart" element={<Cartpage />} />
+        <Route path="/order/:cafeid/:cafename" element={<Orderpage />} />
+      </Route>
     </Routes>
   );
 };

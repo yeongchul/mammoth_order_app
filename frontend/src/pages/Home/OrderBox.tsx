@@ -1,19 +1,36 @@
 import { AnimatePresence } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Choosecafe from "../../components/Drawer/Choosecafe";
+import { User } from "../../types/common";
+import { apiService } from "../../services/loginApi";
 
 export default function OrderBox() {
+  const [user, setUser] = useState<User | null>(null);
   const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    const loadUser = async () => {
+      try {
+        const data = await apiService.getCurrentUser();
+        setUser(data);
+        console.log("user state:", data);
+      } catch (error) {
+        console.error("사용자 정보를 불러오는데 실패했습니다:", error);
+      }
+    };
+
+    loadUser();
+  }, []);
 
   return (
     <div className="p-4">
-      <p className="font-bold text-md">정채빈 님</p>
+      <p className="font-bold text-md">{user?.name} 님</p>
       <p className="font-bold text-md">환영합니다.</p>
       <div className="flex flex-wrap mt-6 w-full h-60">
         <div className="flex relative bg-[#403535] h-40 w-full rounded-xl justify-between">
           <div>
             <p className="text-white pt-4 pl-4 font-semibold">
-              내 포인트 2,625점
+              내 포인트 {user?.point}점
             </p>
             <div className="flex flex-row text-white pt-1 pl-4 text-xs">
               <img

@@ -1,7 +1,6 @@
+import axios from "axios";
 import { AuthResponse, User } from "../types/common";
-
-const API_BASE_URL =
-  import.meta.env.VITE_BACKEND_URL || "http://localhost:8080/api";
+import { API_BASE_URL } from "../contexts/apiContext";
 
 class ApiService {
   private kakaoLoginPromise: Promise<AuthResponse> | null = null;
@@ -14,26 +13,15 @@ class ApiService {
     }
 
     // 새로운 요청 생성
-    this.kakaoLoginPromise = (async () => {
-      try {
-        const response = await fetch(`${API_BASE_URL}/auth/kakao/callback`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ code }),
-        });
-
-        if (!response.ok) {
-          throw new Error("카카오 로그인 처리 중 오류가 발생했습니다.");
-        }
-
-        return response.json();
-      } finally {
-        // 요청이 완료되면 Promise 초기화
+    this.kakaoLoginPromise = axios
+      .post(`${API_BASE_URL}/auth/kakao/callback`, { code })
+      .then((response) => response.data)
+      .catch((error) => {
+        throw new Error("카카오 로그인 처리 중 오류가 발생했습니다.");
+      })
+      .finally(() => {
         this.kakaoLoginPromise = null;
-      }
-    })();
+      });
 
     return this.kakaoLoginPromise;
   }
@@ -46,55 +34,42 @@ class ApiService {
       throw new Error("로그인이 필요합니다.");
     }
 
-    const response = await fetch(`${API_BASE_URL}/auth/me`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-
-    if (!response.ok) {
+    try {
+      const response = await axios.get(`${API_BASE_URL}/auth/me`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      return response.data;
+    } catch (error) {
       throw new Error("사용자 정보를 불러오는 중 오류가 발생했습니다.");
     }
-
-    return response.json();
   }
 
   // 토큰 갱신
   async refreshToken(refreshToken: string): Promise<AuthResponse> {
-    const response = await fetch(`${API_BASE_URL}/auth/refresh`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ refreshToken }),
-    });
-
-    if (!response.ok) {
+    try {
+      const response = await axios.post(`${API_BASE_URL}/auth/refresh`, {
+        refreshToken,
+      });
+      return response.data;
+    } catch (error) {
       throw new Error("토큰 갱신 중 오류가 발생했습니다.");
     }
-
-    return response.json();
   }
 
   // 토큰 유효성 검증
   async validateToken(token: string): Promise<boolean> {
     try {
-      const response = await fetch(`${API_BASE_URL}/auth/validate`, {
+      const response = await axios.get(`${API_BASE_URL}/auth/validate`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-
-      if (!response.ok) {
-        return false;
-      }
-
-      const data = await response.json();
-      return data.valid;
+      return response.data.valid;
     } catch (error) {
       return false;
     }
   }
 }
-
 export const apiService = new ApiService();

@@ -1,11 +1,12 @@
 import KakaoLogin from "../../components/KakaoLogin/KakaoLogin";
+import mammothlogo from "../../assets/logo/mammoth_logo.png";
 
 export default function Loginpage() {
   return (
     <>
       <div className="flex flex-col w-full h-screen bg-[#5D4037] items-center">
         <img
-          src="src/assets/mammoth_logo.png"
+          src={mammothlogo}
           alt="메머드 로고"
           className="flex h-24 mt-[30%]"
           style={{

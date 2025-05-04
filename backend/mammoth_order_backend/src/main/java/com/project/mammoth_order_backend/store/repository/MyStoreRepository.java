@@ -15,12 +15,11 @@ public interface MyStoreRepository extends JpaRepository<MyStore, Long> {
 
     @Query("SELECT new com.project.mammoth_order_backend.store.dto.MyStoreResponseDto(" +
             "m.id," +
-            "m.userId, " +
-            "m.storeId, " +
-            "s.name, " +
-            "s.address) " +
+            "m.user.id, " +
+            "m.store.id, " +
+            "m.store.name, " +
+            "m.store.address) " +
             "FROM MyStore m " +
-            "JOIN Store s ON m.storeId = s.id " +
-            "WHERE m.userId = :userId")
+            "WHERE m.user.id = :userId")
     List<MyStoreResponseDto> findMyStoreResponseDto(@Param("userId") Long userId);
 }
