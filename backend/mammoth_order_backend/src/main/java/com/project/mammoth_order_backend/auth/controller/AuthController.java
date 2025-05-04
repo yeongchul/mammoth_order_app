@@ -76,7 +76,7 @@ public class AuthController {
     }
 
     // 로그아웃
-    @Operation(summary = "로그아웃", description = "사용자의 리프레시 토큰을 삭제하고 로그아웃 처리합니다.")
+    @Operation(summary = "로그아웃", description = "사용자의 리프레시 토큰을 삭제하고 로그아웃 처리합니다.\nJWT 토큰을 헤더에 포함해야 합니다.")
     @PostMapping("/logout")
     public ResponseEntity<String> logout(HttpServletRequest request, @AuthenticationPrincipal CustomUserDetails userDetails) {
         // 1. Authorization 헤더에서 토큰 추출
