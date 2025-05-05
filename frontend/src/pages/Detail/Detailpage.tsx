@@ -1,6 +1,6 @@
 import DetailHeader from "../../components/Header/DetailHeader";
 import { motion } from "framer-motion";
-import { Cart, DetailProps, User } from "../../types/common";
+import { Cart, DetailProps } from "../../types/common";
 import { fetchBeverage } from "../../services/beverageApi";
 import Sizeexplain from "./Sizeexplain";
 import Personaloption from "./Personaloption";
@@ -10,45 +10,39 @@ import Milkoption from "./Milkoption";
 import { useState, useEffect } from "react";
 import { BeverageItem } from "../../types/common";
 import CartBtn from "../../components/Button/CartBtn";
-import OrderBtn from "../../components/Button/OrderBtn";
-import { useNavigate, useParams } from "react-router-dom";
-import { apiService } from "../../services/loginApi";
+import { HalfOrderBtn } from "../../components/Button/OrderBtn";
 
 export default function Detailpage({
   onClose,
   beverageid,
   cafeid,
-  cafename,
 }: DetailProps) {
-  const navigate = useNavigate();
-
-  const [user, setUser] = useState<User | null>(null);
   const [number, setNumber] = useState(1);
 
   const [extraPrice, setExtraPrice] = useState(0);
   const [selectBeverage, setSelectBeverage] = useState<BeverageItem>();
-  const [size, setSize] = useState<"s" | "m" | "l">("m");
+  const [size, setSize] = useState<"s" | "m" | "l" >("m");
   const [cupType, setCupType] = useState<
-    "disposableCup" | "personalCup" | "storeCup"
-  >("disposableCup");
-  const [isIce, setIsIce] = useState<boolean>(true);
+    "disposableCup" | "personalCup" | "storeCup">("disposableCup");
+  const [isIce, setIsIce] = useState<boolean >(true);
   const [milkoption, setMilkoption] = useState<
-    "milk" | "lowFatMilk" | "soyMilk" | "almondBreeze" | "oatSide"
-  >("milk");
+    "milk" | "lowFatMilk" | "soyMilk" | "almondBreeze" | "oatSide">("milk");
 
-  const [addCart, setAddCart] = useState<Cart>();
+  const [addCart, setAddCart] = useState<Cart | undefined>({
+    storeId: cafeid || 0,
+    menuId: beverageid || 0,
+    menuQuantity: 1,
+    cupType: undefined,
+    isIce: undefined,
+    size: undefined,
+    milkType: undefined,
+  });
 
   useEffect(() => {
-    if (!selectBeverage || !cafeid) return;
-    const loadUser = async () => {
-      try {
-        const data = await apiService.getCurrentUser();
-        setUser(data);
-        console.log("user state:", data);
-      } catch (error) {
-        console.error("사용자 정보를 불러오는데 실패했습니다:", error);
-      }
-    };
+    if(!beverageid || !cafeid) {
+      console.log("선택된 음료나 카페가 없습니다");
+      return
+    }
     const loadBeverage = async (beverageid: number | null) => {
       if (beverageid) {
         try {
@@ -60,22 +54,38 @@ export default function Detailpage({
         }
       }
     };
-    loadUser();
-
-    if (user?.id)
-      setAddCart({
-        userId: user?.id,
-        storeId: cafeid,
-        menuId: selectBeverage.id,
-        menuQuantity: number,
-        cupType: cupType,
-        isIce: isIce,
-        size: size,
-        milkoption: milkoption,
-      });
-
+      
     loadBeverage(beverageid);
-  }, [selectBeverage, cafeid, number, cupType, isIce, size, milkoption]);
+  }, [beverageid, cafeid]);
+
+  useEffect(() => {
+    if (!selectBeverage) return ;
+
+    if (selectBeverage.menuType !== "food") {
+    setAddCart(prev =>
+      prev
+        ? {
+            ...prev,
+            menuQuantity: number,
+            cupType: cupType,
+            isIce: isIce,
+            size: size,
+            milkType: milkoption,
+          }
+        : prev // 또는 null 초기값이면 null 처리도 가능
+    );
+  }
+  else{
+    setAddCart(prev =>
+      prev
+        ? {
+            ...prev,
+            menuQuantity: number,
+          }
+        : prev // 또는 null 초기값이면 null 처리도 가능
+    );
+  }
+  }, [number, cupType, isIce, size, milkoption]);
 
   return (
     <div className="h-screen">
@@ -105,12 +115,15 @@ export default function Detailpage({
                 </p>
                 {["coffee", "coldBrew", "nonCoffee"].includes(
                   selectBeverage.menuType
-                ) && <Beverageoption setExtraPrice={setExtraPrice} />}
+                ) && <Beverageoption setCupType={setCupType} setAddCart = {setAddCart} setSize={setSize} setIsIce={setIsIce} setExtraPrice={setExtraPrice}  />}
                 {["teaAde", "frappeBlended"].includes(
                   selectBeverage.menuType
-                ) && <Frappeoption setCupType={setCupType} />}
+                ) && <Frappeoption setCupType={setCupType} setAddCart = {setAddCart} />}
                 <Sizeexplain />
-                {selectBeverage.hasMilk && <Milkoption />}
+                {selectBeverage.hasMilk && <Milkoption
+                    setMilkOption={setMilkOption}
+                    setAddCart={setAddCart}
+                  />}
               </div>
               {selectBeverage.menuType != "food" && <Personaloption />}
               <div className="flex justify-between items-center bg-white p-5 mt-2 shadow-sm">
@@ -169,7 +182,7 @@ export default function Detailpage({
 
                 <div className="flex flex-row justify-between items-center ">
                   {addCart && <CartBtn onClose={onClose} addCart={addCart} />}
-                  <OrderBtn />
+                  <HalfOrderBtn />
                 </div>
               </div>
             </>

@@ -1,5 +1,10 @@
+import { useState } from "react";
 import { IsClose } from "../../types/common";
+import { AnimatePresence } from "framer-motion";
+import Cartpage from "../../pages/Cart/Cartpage";
+
 export default function DetailHeader({ onClose }: IsClose) {
+  const [isCartOpen, setIsCartOpen] = useState(false);
   return (
     <div className="flex justify-between bg-white items-center p-2 pl-1 pr-1 h-12">
       <div className="navbar-start">
@@ -19,7 +24,7 @@ export default function DetailHeader({ onClose }: IsClose) {
         <p className="font-extrabold">메뉴상세</p>
       </div>
       <div className="navbar-end">
-        <button className="p-2">
+        <button className="p-2" onClick={()=>setIsCartOpen(true)}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             height="28px"
@@ -31,6 +36,9 @@ export default function DetailHeader({ onClose }: IsClose) {
           </svg>
         </button>
       </div>
+      <AnimatePresence>
+        {isCartOpen && <Cartpage onClose={() => setIsCartOpen(false)} />}
+      </AnimatePresence>
     </div>
   );
 }

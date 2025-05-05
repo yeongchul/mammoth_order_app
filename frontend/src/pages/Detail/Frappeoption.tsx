@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FrappeoptionProps } from "../../types/common";
 
 type CupTypeKeys = "일회용컵 사용" | "개인컵 사용" | "매장컵(먹고 갈게요)";
@@ -7,7 +7,7 @@ type CupTypeMapping = {
   [key in CupTypeKeys]: CupTypeValues;
 };
 
-export default function Frappeoption({ setCupType }: FrappeoptionProps) {
+export default function Frappeoption({ setCupType, setAddCart}: FrappeoptionProps) {
   const cupTypeMapping: CupTypeMapping = {
     "일회용컵 사용": "disposableCup",
     "개인컵 사용": "personalCup",
@@ -15,8 +15,39 @@ export default function Frappeoption({ setCupType }: FrappeoptionProps) {
   };
 
   const [selectedCup, setSelectedCup] = useState<CupTypeKeys>("일회용컵 사용");
-
+  
   const sizePrice: number = 0;
+
+  useEffect(()=>{
+    setCupType("disposableCup");    
+    setAddCart(prev =>
+      prev
+        ? {
+            ...prev,
+            cupType: "disposableCup",
+        isIce: true, 
+        size: "m"
+          }
+        : prev
+    );
+  },[])
+
+  const handleCupTypeChange = (cup: CupTypeKeys) => {
+    setSelectedCup(cup);
+    const cupTypeValue = cupTypeMapping[cup];
+    setCupType(cupTypeValue);
+    console.log(cupTypeValue);
+    
+    setAddCart(prev =>
+      prev
+        ? {
+            ...prev,
+            cupType: cupTypeValue,
+          }
+        : prev
+    );
+  };
+
   return (
     <div className="p-5 w-full">
       <div>
@@ -26,10 +57,7 @@ export default function Frappeoption({ setCupType }: FrappeoptionProps) {
             <div
               key={index}
               role="button"
-              onClick={() => {
-                setSelectedCup(cup);
-                setCupType(cupTypeMapping[cup]);
-              }}
+              onClick={() => handleCupTypeChange(cup)}
               className={`flex items-center justify-center border-2 font-bold text-xs mt-3 mr-1 p-2.5 rounded-lg cursor-pointer
                     ${
                       selectedCup === cup
@@ -37,7 +65,7 @@ export default function Frappeoption({ setCupType }: FrappeoptionProps) {
                         : "border-gray-200"
                     }`}
             >
-              {index}
+              {cup}
             </div>
           ))}
         </div>

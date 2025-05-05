@@ -9,28 +9,21 @@ export interface BeverageItem {
 }
 
 export interface Cart {
-  userId: number;
   storeId: number;
   menuId: number;
   menuQuantity: number;
   cupType?: "disposableCup" | "personalCup" | "storeCup";
   isIce?: boolean;
   size?: "s" | "m" | "l";
-  milkoption?: "milk" | "lowFatMilk" | "soyMilk" | "almondBreeze" | "oatSide";
+  milkType?: "milk" | "lowFatMilk" | "soyMilk" | "almondBreeze" | "oatSide";
 }
-
-export interface Order {
+export interface CartInfo extends Cart{
   id: number;
   userId: number;
-  storeId: number;
   storeName: string;
-  productId: number;
-  productPrice: number;
-  productQuantity: number;
-  cupType?: "disposableCup" | "personalCup" | "storeCup";
-  isIce?: boolean;
-  size?: "s" | "m" | "l";
-  milkoption?: "milk" | "lowFatMilk" | "soyMilk" | "almondBreeze" | "oatSide";
+  menuName: string;
+  menuImage: string;
+  menuPrice: number;
 }
 
 export interface OrderLog {
@@ -78,7 +71,6 @@ export interface Logout {
 export interface DetailProps extends IsClose {
   beverageid: number | null;
   cafeid: number | undefined;
-  cafename: string | undefined;
 }
 
 export type BeveragelistProps = {
@@ -93,15 +85,17 @@ export type BeveragelistProps = {
 };
 
 export type FrappeoptionProps = {
-  setCupType: (cup: Cart["cupType"]) => void;
+  setCupType: (cup: "disposableCup" | "personalCup" | "storeCup") => void;
+  setAddCart: React.Dispatch<React.SetStateAction<Cart | undefined>>;
 };
 
 export type CoffeeoptionProps = FrappeoptionProps & {
-  setExtraPrice: (price: number) => void;
-  setSize: (size: Cart["size"]) => void;
+  setSize: (size:  "s" | "m" | "l") => void;
   setIsIce: (isIce: boolean) => void;
+  setExtraPrice: (price: number) => void;
 };
 
 export type MilkoptionProps = {
-  setMilkoption: (milk: Cart["milkoption"]) => void;
+  setMilkOption: (milk: "milk" | "lowFatMilk" | "soyMilk" | "almondBreeze" | "oatSide") => void;
+  setAddCart: React.Dispatch<React.SetStateAction<Cart | undefined>>;
 };

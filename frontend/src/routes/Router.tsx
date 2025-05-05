@@ -18,8 +18,7 @@ const Router = () => {
       {/* 인증 필요 라우트 */}
       <Route element={<PrivateRoute />}>
         <Route path="/home" element={<Homepage />} />
-        <Route path="/cart" element={<Cartpage />} />
-        <Route path="/order/:cafeid/:cafename" element={<Orderpage />} />
+        <Route path="/order/:cafeid" element={<Orderpage />} />
       </Route>
     </Routes>
   );

@@ -4,22 +4,35 @@ import ExplainBox from "./ExplainBox";
 import Detailpage from "../Detail/Detailpage";
 import Choosecafe from "../../components/Drawer/Choosecafe";
 import { useNavigate, useParams } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BeveragelistProps } from "../../types/common";
 import { useRef } from "react";
 import { AnimatePresence } from "framer-motion";
+import { fetchCafeName } from "../../services/storeApi";
 
 export default function Orderpage() {
   const tabRefs = useRef<(HTMLAnchorElement | null)[]>([]);
-  const { cafeid, cafename } = useParams<{
+  const { cafeid } = useParams<{
     cafeid: string;
-    cafename: string;
   }>();
+  const [cafeName, setCafeName] = useState<string>("");
   const [activeTab, setActiveTab] = useState<BeveragelistProps["type"]>("new");
-
+  const [cafeId, setCafeId] = useState<number>(0)
   const [isDetailOpen, setIsDetailOpen] = useState(false);
   const [beverageId, setBeverageId] = useState<number | null>(null);
   const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(()=>{
+    async function getCafeName(cafeid: string | undefined) {
+      if (cafeid !== undefined) {
+        const cafename = await fetchCafeName(Number(cafeid));
+        console.log("카페 이름:", cafename);
+        setCafeName(cafename);
+        setCafeId(Number(cafeid));
+      }
+    }
+    getCafeName(cafeid);
+  },[])
 
   const typeLabels: Record<BeveragelistProps["type"], string> = {
     new: "NEW",
@@ -57,7 +70,7 @@ export default function Orderpage() {
       <div className="bg-[#ECECEC] h-[90%] overflow-y-auto">
         <div className="flex justify-between items-center bg-white p-2 mb-3">
           <div className="flex flex-row ml-2">
-            <p className="font-extrabold">{cafename}</p>
+            <p className="font-extrabold">{cafeName}</p>
             <p>의 메뉴입니다.</p>
           </div>
           <div
@@ -99,8 +112,7 @@ export default function Orderpage() {
             <Detailpage
               onClose={() => setIsDetailOpen(false)}
               beverageid={beverageId}
-              cafeid={cafeid ? parseInt(cafeid, 10) : undefined}
-              cafename={cafename}
+              cafeid={cafeId}
             />
           )}
         </AnimatePresence>
