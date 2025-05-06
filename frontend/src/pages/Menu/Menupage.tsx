@@ -1,18 +1,12 @@
 import CloseHeader from "../../components/Header/CloseHeader";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { IsClose } from "../../types/common";
 import Menulist from "./Menulist";
-import { useAuth } from "../../contexts/AutoContext";
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import Settingpage from "../Setting/Settingpage";
 
 export default function Menupage({ onClose }: IsClose) {
-  const { logout } = useAuth();
-  const navigate = useNavigate();
-
-  const handleLogout = () => {
-    logout();
-    navigate("/login");
-  };
+const [isSettingOpen, setIsSettingOpen] = useState(false);
   return (
     <motion.div
       className="fixed inset-0 bg-white z-50"
@@ -30,7 +24,7 @@ export default function Menupage({ onClose }: IsClose) {
           </div>
           <button
             className="ml-1 text-gray-400 font-semibold text-[10px]"
-            onClick={handleLogout}
+            onClick={()=>setIsSettingOpen(true)}
           >
             계정설정 &gt;
           </button>
@@ -60,6 +54,9 @@ export default function Menupage({ onClose }: IsClose) {
           </div>
         </div>
       </div>
+      <AnimatePresence>
+        {isSettingOpen && <Settingpage onClose={() => setIsSettingOpen(false)} />}
+        </AnimatePresence>
     </motion.div>
   );
 }

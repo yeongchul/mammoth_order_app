@@ -4,8 +4,9 @@ import { useState } from "react";
 import { AnimatePresence } from "framer-motion";
 import Buynowpage from "../../pages/Purchase/Buynowpage";
 import Purchasepage from "../../pages/Purchase/Purchasepage";
-import { Cart } from "../../types/common";
-import { addToBuynow } from "../../services/orderApi";
+import { Cart, Order } from "../../types/common";
+import { addToBuynow, buyNow } from "../../services/orderApi";
+import PurchaseModal from "../Modal/PurchaseModal";
 
 interface PurchaseBtnProps {
   cartIds?: number[];
@@ -38,7 +39,7 @@ export function OrderBtn() {
   return (
     <>
     <div role="button" 
-    className="flex justify-center items-center w-[90%] p-2.5 border-2 border-red-500 bg-red-500 rounded-lg"
+    className="flex justify-center items-center w-[90%] p-2.5 border-2 border-red-600 bg-red-600 rounded-lg"
     onClick={()=>setIsPurchaseOpen(true)}
     >
       <p className="font-semibold text-white">주문하기</p>
@@ -51,44 +52,84 @@ export function OrderBtn() {
 }
 export function PurchaseCartBtn({cartIds} : PurchaseBtnProps) {
 const navigate = useNavigate();
+const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+const [point, setPoint] = useState<number>(0);
+const [isChecked, setIsChecked] = useState<boolean>(false);
 
 async function handlePurchase(){
+  if (!isChecked) return;
   if (!cartIds || cartIds.length === 0) {
     console.error("장바구니가 비어있습니다.");
     return;
   }
-  const point = await purchaseToCart(cartIds);
-  alert(`포인트 ${point}점이 적립되었습니다.`);
-  navigate("/");
+  const getpoint = await purchaseToCart(cartIds);
+  setPoint(getpoint);
+  setIsModalOpen(true);
+  setTimeout(() => {
+    navigate("/home");
+  }, 1500);
 }
 
   return (
-    <div role="button" 
-    className="flex justify-center items-center w-[90%] p-2.5 border-2 border-red-500 bg-red-500 rounded-lg"
-    onClick={()=>handlePurchase()}>
-      <p className="font-semibold text-white">결제진행</p>
-    </div>
+    <div className="flex flex-col items-center">
+       <div className="flex flex-row mt-3 text-sm items-center pr-5 pl-5 mb-3">
+                <input type="checkbox"
+                onChange={(e) => setIsChecked(e.target.checked)}
+                className="checkbox border-gray-400 bg-white checked:border-red-600 checked:bg-red-600 checked:text-white checkbox-sm mr-1" />
+                <p className="ml-1">주문상품정보 및 결제대행 서비스 이용약관에 모두 동의합니다.</p>
+            </div>
+      <div role="button" 
+      className={`flex justify-center items-center w-[90%] p-2.5 border-2 rounded-lg ${
+        isChecked ? "bg-red-600 border-red-600" : "bg-gray-300 border-gray-300 cursor-not-allowed"
+      }`}
+      onClick={()=>handlePurchase()}>
+        <p className="font-semibold text-white">결제진행</p>
+        {isModalOpen && <PurchaseModal point={point} /> }
+      </div>
+      </div>
   );
 }
 
-export function PurchaseBtn({cartIds} : PurchaseBtnProps) {
+type buynowProps = {
+  buyInfo?: Order;
+};
+
+export function PurchaseBtn({buyInfo} : buynowProps) {
   const navigate = useNavigate();
-  
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [point, setPoint] = useState<number>(0);
+  const [isChecked, setIsChecked] = useState<boolean>(false);
+
   async function handlePurchase(){
-    if (!cartIds || cartIds.length === 0) {
+    if (!isChecked) return;
+    if (!buyInfo ) {
       console.error("장바구니가 비어있습니다.");
       return;
     }
-    const point = await purchaseToCart(cartIds);
-    alert(`포인트 ${point}점이 적립되었습니다.`);
-    navigate("/");
+    const getpoint = await buyNow(buyInfo);
+    setPoint(getpoint);
+    setIsModalOpen(true);
+  setTimeout(() => {
+    navigate("/home");
+  }, 1500);
   }
   
     return (
+      <div className="flex flex-col items-center">
+       <div className="flex flex-row mt-3 text-sm items-center pr-5 pl-5 mb-3">
+                <input type="checkbox"
+                onChange={(e) => setIsChecked(e.target.checked)}
+                className="checkbox border-gray-400 bg-white checked:border-red-600 checked:bg-red-600 checked:text-white checkbox-sm mr-1" />
+                <p className="ml-1">주문상품정보 및 결제대행 서비스 이용약관에 모두 동의합니다.</p>
+            </div>
       <div role="button" 
-      className="flex justify-center items-center w-[90%] p-2.5 border-2 border-red-500 bg-red-500 rounded-lg"
+      className={`flex justify-center items-center w-[90%] p-2.5 border-2 rounded-lg ${
+        isChecked ? "bg-red-600 border-red-600" : "bg-gray-300 border-gray-300 cursor-not-allowed"
+      }`}
       onClick={()=>handlePurchase()}>
         <p className="font-semibold text-white">결제진행</p>
+        {isModalOpen && <PurchaseModal point={point} /> }
+      </div>
       </div>
     );
   }

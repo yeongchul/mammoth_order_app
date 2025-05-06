@@ -13,6 +13,7 @@ export default function Loginpage() {
             filter: "brightness(0) invert(1)",
           }}
         />
+        <div className="h-40"></div>
         <KakaoLogin />
         <div
           role="button"

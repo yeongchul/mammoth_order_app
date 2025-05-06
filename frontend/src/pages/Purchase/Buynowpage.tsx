@@ -3,10 +3,13 @@ import CartHeader from "../../components/Header/CartHeader";
 import { IsClose, Order, CartInfo } from "../../types/common";
 import { fetchBuynow } from "../../services/orderApi";
 import { useEffect,useState } from "react";
+import { PurchaseBtn } from "../../components/Button/OrderBtn";
 import mammothLogo from "../../assets/logo/mammoth_logo_notext.png";
+import SelectBuy from "./SelectBuy";
 
 export default function Buynowpage({onClose}:IsClose) {
     const [buyNow, setBuyNow] = useState<CartInfo>();
+    const [buyInfo, setBuyInfo] = useState<Order>();
     useEffect(()=>{
         async function fetchbuy() {
             try {
@@ -14,11 +17,30 @@ export default function Buynowpage({onClose}:IsClose) {
               setBuyNow(buyinfo);
             } catch (error) {
               console.error("바로구매 세션 가져오기 실패", error);
-              alert("바로구매 정보를 가져오지 못했습니다. 다시 시도해주세요.");
             }
-          }
+          }              
           fetchbuy();
     },[])
+
+    useEffect(() => {
+        if (buyNow ) {
+          if(buyNow.size){
+            const order: Order = {
+                menuId: buyNow.menuId,
+                menuQuantity: buyNow.menuQuantity,
+                size: buyNow.size,
+              };
+              setBuyInfo(order);
+          }
+          else{
+            const order: Order = {
+                menuId: buyNow.menuId,
+                menuQuantity: buyNow.menuQuantity,
+              };
+              setBuyInfo(order);
+          }
+        }
+      }, [buyNow]);
 
     function cupTypeMapping(cupType:string){
         if(cupType == "personalCup"){
@@ -58,9 +80,7 @@ export default function Buynowpage({onClose}:IsClose) {
       >
         <CartHeader onClose={onClose} />
         {buyNow && <div className="bg-[#ECECEC] h-[90%] overflow-y-auto">
-      <div>
-      <div className="bg-white">
-        <div className="flex flex-row items-center p-2 font-bold">
+        <div className="flex flex-row bg-white items-center p-2 font-bold shadow-sm">
             <div className="flex relative justify-center items-center bg-[#5D4037] w-5 h-5 rounded-md p-0.5 ml-2 mr-1">
                 <img
                     src={mammothLogo}
@@ -72,11 +92,10 @@ export default function Buynowpage({onClose}:IsClose) {
                   </div>
                 <p>{buyNow.storeName}</p>
             </div>
-            <div className="mt-2 p-2 w-full border-t-2 border-gray-200"></div>
-            <div className="flex flex-row w-full mt-3">
+            <div className="flex flex-row bg-white p-2 w-full mt-3">
                 <div className="flex items-center w-[35%]">
                     <img src={buyNow.menuImage} alt={buyNow.menuName}
-                className="w-[95%] h-auto"/>
+                className="w-[80%] h-auto"/>
                 </div>
                 <div className="flex flex-row justify-between w-[65%]">
                     <div className="flex flex-col justify-between">
@@ -93,13 +112,42 @@ export default function Buynowpage({onClose}:IsClose) {
                         <p className="font-bold">{new Intl.NumberFormat("ko-KR").format(
             buyNow.menuPrice
           )}원</p>
-          <p className="text-xs">(수량: {buyNow.menuQuantity}개)</p>
+          <p className="text-xs mt-1">(수량: {buyNow.menuQuantity}개)</p>
           </div>
                     </div>
                 </div>
-            </div>
         </div>
-      </div>
+          <SelectBuy />
+          <div className="flex flex-col p-3 bg-white mt-3">
+            <div className="flex justify-between items-center">
+                <p className="text-sm font-semibold">상품 금액</p>
+                <div className="flex flex-row items-center">
+                    <p className="text-sm font-semibold">{new Intl.NumberFormat("ko-KR").format(
+            buyNow.menuPrice
+          )}</p>    
+                    <p className="text-[10px]">원</p>
+                </div>    
+            </div>
+            <div className="flex justify-between items-center mt-2 mb-2">
+                <p className="text-sm font-semibold">할인 금액</p>
+                <div className="flex flex-row items-center">
+                    <p className="text-sm font-semibold">-0</p>    
+                    <p className="text-[10px]">원</p>
+                </div>    
+            </div>
+            <div className="flex justify-between items-center">
+                <p className="text-sm font-semibold">결제 금액</p>
+                <div className="flex flex-row items-center text-red-600">
+                    <p className="text-sm font-semibold">{new Intl.NumberFormat("ko-KR").format(
+            buyNow.menuPrice
+          )}</p>    
+                    <p className="text-[10px]">원</p>
+                </div>    
+            </div>
+           </div>
+        <div className="flex bg-white pt-5 pb-5 mt-0.5 justify-center">
+            <PurchaseBtn buyInfo={buyInfo}/>
+        </div>
       </div>
       }
       </motion.div>

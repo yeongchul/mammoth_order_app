@@ -38,7 +38,7 @@ export default function CartBtn({ onClose, addCart, setAddCart }: CartBtnProps) 
           );
           setTimeout(() => {
             onClose();
-          }, 1000);
+          }, 1500);
         } catch (error) {
           alert("장바구니 담기에 실패했습니다.");
           console.error(error);

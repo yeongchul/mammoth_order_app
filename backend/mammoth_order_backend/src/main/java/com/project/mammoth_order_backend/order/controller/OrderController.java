@@ -87,6 +87,7 @@ public class OrderController {
         System.out.println("sessionKey = " + sessionKey);
         BuyNowRequestDto test = (BuyNowRequestDto)session.getAttribute(sessionKey);
         System.out.println("session = " + test.getMenuId());
+        System.out.println("세션 ID: " + session.getId());
         return ResponseEntity.ok("저장되었습니다");
     }
     
@@ -99,8 +100,7 @@ public class OrderController {
         String sessionKey = "buyNow_" + userId;
         System.out.println("sessionKey = " + sessionKey);
         BuyNowRequestDto buyNowRequestDto = (BuyNowRequestDto)session.getAttribute(sessionKey);
-        BuyNowRequestDto test = (BuyNowRequestDto)session.getAttribute(sessionKey);
-        System.out.println("session = " + test.getMenuId());
+        System.out.println("세션 ID: " + session.getId());
 
         if (buyNowRequestDto == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)

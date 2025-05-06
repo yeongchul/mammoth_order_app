@@ -3,6 +3,7 @@ import { CartInfo } from "../../types/common";
 import { fetchCart } from "../../services/cartApi";
 import mammothLogo from "../../assets/logo/mammoth_logo_notext.png";
 import { PurchaseCartBtn } from "../../components/Button/OrderBtn";
+import SelectBuy from "./SelectBuy";
 
 export default function Purchaselist(){
     const [cart, setCart] = useState<CartInfo[]>([]);
@@ -55,9 +56,9 @@ export default function Purchaselist(){
 
       return(
         <>
-        <div className="bg-white">
-            <div className="flex flex-row items-center p-2 font-bold">
-            <div className="flex relative justify-center items-center bg-[#5D4037] w-5 h-5 rounded-md p-0.5 ml-2 mr-1">
+        <div >
+            <div className="flex flex-row bg-white items-center p-2 font-bold shadow-sm mb-3">
+            <div className="flex justify-center items-center bg-[#5D4037] w-5 h-5 rounded-md p-0.5 ml-2 mr-1">
                 <img
                     src={mammothLogo}
                     alt="글자없는매머드로고"
@@ -69,12 +70,12 @@ export default function Purchaselist(){
                 <p>{storename}</p>
             </div>
         {cart.map((cart, index)=>(
-            <div key={index} className="p-2">
+            <div key={index} className="p-2 bg-white">
             {index!=0 && <div className="mt-2 w-full border-t-2 border-gray-200"></div>}
             <div className="flex flex-row w-full mt-3">
                 <div className="flex items-center w-[35%]">
                     <img src={cart.menuImage} alt={cart.menuName}
-                className="w-[95%] h-auto"/>
+                className="w-[80%] h-auto"/>
                 </div>
                 <div className="flex flex-row justify-between w-[65%]">
                     <div className="flex flex-col justify-between">
@@ -99,14 +100,35 @@ export default function Purchaselist(){
             </div>
         ))}
         </div>
-        <div className="flex flex-row p-3 mt-2 bg-white justify-between">
-        <p className="font-bold text-sm">상품금액</p>
-        <p className="font-bold text-sm ">
-          {new Intl.NumberFormat("ko-KR").format(
+        <SelectBuy />
+        <div className="flex flex-col p-3 bg-white mt-3">
+            <div className="flex justify-between items-center">
+                <p className="text-sm font-semibold">상품 금액</p>
+                <div className="flex flex-row items-center">
+                    <p className="text-sm font-semibold">{new Intl.NumberFormat("ko-KR").format(
             totalprice
-          )}
-          원
-        </p>
+          )}</p>    
+                    <p className="text-[10px]">원</p>
+                </div>    
+            </div>
+            <div className="flex justify-between items-center mt-2 mb-2">
+                <p className="text-sm font-semibold">할인 금액</p>
+                <div className="flex flex-row items-center">
+                    <p className="text-sm font-semibold">-0</p>    
+                    <p className="text-[10px]">원</p>
+                </div>    
+            </div>
+            <div className="flex justify-between items-center">
+                <p className="text-sm font-semibold">결제 금액</p>
+                <div className="flex flex-row items-center text-red-600">
+                    <p className="text-sm font-semibold">{new Intl.NumberFormat("ko-KR").format(
+            totalprice
+          )}</p>    
+                    <p className="text-[10px]">원</p>
+                </div>    
+            </div>
+           </div>
+        <div className="flex flex-row p-3 mt-2 bg-white justify-between">
       </div>
       <div className="flex bg-white pt-5 pb-5 mt-0.5 justify-center">
           <PurchaseCartBtn cartIds={cartIds}/>

@@ -7,7 +7,8 @@ const token = localStorage.getItem("token");
 //세션 저장
 export async function addToBuynow(addcart: Cart): Promise<string> {
     const res = await axios.post(`${API_BASE_URL}/order/buy-now/session`, addcart , {
-      headers: {
+        withCredentials: true,
+        headers: {
         Authorization: `Bearer ${token}`,
       },
     });
@@ -28,7 +29,7 @@ export async function addToBuynow(addcart: Cart): Promise<string> {
   }
 
   //구매
-export async function purchaseToCart(buyItems : Order): Promise<number> {
+export async function buyNow(buyItems : Order): Promise<number> {
     const res = await axios.post(`${API_BASE_URL}/order/buy-now/checkout`, buyItems, {
         headers: {
           Authorization: `Bearer ${token}`,

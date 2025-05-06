@@ -87,7 +87,7 @@ export default function Cartlist(){
             <div className="flex flex-row w-full mt-3">
                 <div className="flex items-center w-[35%]">
                     <img src={cart.menuImage} alt={cart.menuName}
-                className="w-[95%] h-auto"/>
+                className="w-[80%] h-auto"/>
                 </div>
                 <div className="flex flex-row justify-between w-[65%]">
                     <div className="flex flex-col justify-between">
