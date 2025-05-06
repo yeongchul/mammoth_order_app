@@ -154,6 +154,10 @@ public class OrderService {
     }
 
     private int calculateMenuPriceWithSize(int basePrice, Size size) {
+        if(size == null) {
+            return basePrice;
+        }
+        
         switch (size) {
             case s:
                 return basePrice - 400;
