@@ -47,4 +47,13 @@ public class User {
 
     @Column(nullable = false)
     private Integer point;
+
+    public void update(String email, String name, String profileImage, Set<String> roles, LocalDateTime updatedAt, Integer point) {
+        this.email = email;
+        this.name = name;
+        this.profileImage = profileImage;
+        this.roles = roles;
+        this.updatedAt = updatedAt;
+        this.point = point;
+    }
 }
