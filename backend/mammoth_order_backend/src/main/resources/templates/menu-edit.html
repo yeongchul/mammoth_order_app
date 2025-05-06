@@ -1,4 +1,3 @@
-<!-- templates/admin/menu-edit.html -->
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
   <head>
@@ -36,20 +35,25 @@
       label {
         font-weight: bold;
         color: #333;
-        margin-bottom: 5px;
+        margin-bottom: 10px; /* 라벨과 입력 폼 간격 조정 */
       }
 
       input[type="text"],
-      input[type="number"] {
+      input[type="number"],
+      select {
         padding: 10px;
         font-size: 14px;
         border: 1px solid #ddd;
         border-radius: 4px;
         background-color: #f9f9f9;
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
       }
 
       input[type="text"]:focus,
-      input[type="number"]:focus {
+      input[type="number"]:focus,
+      select:focus {
         border-color: #4caf50;
         outline: none;
         background-color: #ffffff;
@@ -82,32 +86,10 @@
         background-color: #c62828;
       }
 
-      .form-section {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-      }
-
-      .image-preview {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-      }
-
-      .image-preview img {
-        border-radius: 4px;
-        width: 50px;
-        height: 50px;
-        object-fit: cover;
-      }
-
       .form-actions {
         display: flex;
         justify-content: space-between;
         gap: 20px;
-        /* width: 50%; */
-        /* width: 50%; */
-        /* background-color: #45a049; */
       }
 
       .form-actions button {
@@ -117,6 +99,91 @@
       .form-actions a,
       .form-actions button {
         width: 100%;
+      }
+
+      /* 카테고리 셀렉트 박스 꾸미기 */
+      select {
+        background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6"%3E%3Cpath fill="%23333" d="M5 6L0 0h10L5 6z"%3E%3C/path%3E%3C/svg%3E');
+        background-repeat: no-repeat;
+        background-position: right 10px center;
+        background-size: 12px;
+        padding-right: 40px;
+        cursor: pointer;
+        transition: border-color 0.3s ease, background-color 0.3s ease;
+      }
+
+      select:focus {
+        border-color: #4caf50;
+        background-color: #ffffff;
+      }
+
+      /* 옵션 꾸미기 */
+      option {
+        padding: 10px;
+        font-size: 14px;
+        background-color: #fff;
+        color: #333;
+      }
+
+      option:hover {
+        background-color: #f0f0f0;
+      }
+
+      .radio-group {
+        display: flex;
+        gap: 20px;
+      }
+
+      .radio-group label {
+        font-weight: normal;
+        margin-left: 5px;
+        color: #333;
+        display: inline-flex;
+        align-items: center;
+        cursor: pointer;
+        font-size: 16px;
+      }
+
+      .radio-group input[type="radio"] {
+        display: none;
+      }
+
+      .radio-group input[type="radio"] + label::before {
+        content: "";
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        margin-right: 10px;
+        border: 2px solid #4caf50;
+        border-radius: 50%;
+        background-color: #fff;
+        transition: all 0.3s ease;
+      }
+
+      .radio-group input[type="radio"]:checked + label::before {
+        background-color: #4caf50;
+        border-color: #4caf50;
+        box-shadow: 0 0 0 4px rgba(76, 175, 80, 0.3);
+      }
+
+      .radio-group input[type="radio"]:checked + label {
+        color: #4caf50;
+        font-weight: bold;
+      }
+
+      .radio-group input[type="radio"]:disabled + label {
+        color: #ccc;
+        cursor: not-allowed;
+      }
+
+      /* 우유 유무 및 신메뉴 라디오 버튼에 마진 추가 */
+      .radio-group div {
+        margin-bottom: 15px; /* 라디오 버튼 간격을 추가 */
+      }
+
+      /* 카테고리와 신메뉴 간 간격 */
+      select + label {
+        margin-top: 20px; /* 카테고리와 신메뉴 간의 간격을 띄움 */
       }
     </style>
   </head>
@@ -138,27 +205,94 @@
       <input type="number" name="price" th:value="${menu.price}" /><br />
 
       <label>우유 유무</label>
-      <input type="text" name="hasMilk" th:value="${menu.hasMilk}" /><br />
+      <div class="radio-group">
+        <div>
+          <input
+            type="radio"
+            id="hasMilkYes"
+            name="hasMilk"
+            th:value="true"
+            th:checked="${menu.hasMilk} == true"
+          />
+          <label for="hasMilkYes">있음</label>
+        </div>
+        <div>
+          <input
+            type="radio"
+            id="hasMilkNo"
+            name="hasMilk"
+            th:value="false"
+            th:checked="${menu.hasMilk} == false"
+          />
+          <label for="hasMilkNo">없음</label>
+        </div>
+      </div>
 
       <label>카테고리</label>
-      <input type="text" name="menuType" th:value="${menu.menuType}" /><br />
+      <select name="menuType">
+        <option
+          th:value="coffee"
+          th:selected="${menu.menuType.name()} == 'coffee'"
+        >
+          커피
+        </option>
+        <option
+          th:value="coldBrew"
+          th:selected="${menu.menuType.name()} == 'coldBrew'"
+        >
+          콜드브루
+        </option>
+        <option
+          th:value="nonCoffee"
+          th:selected="${menu.menuType.name()} == 'nonCoffee'"
+        >
+          논커피
+        </option>
+        <option
+          th:value="teaAde"
+          th:selected="${menu.menuType.name()} == 'teaAde'"
+        >
+          티, 에이드
+        </option>
+        <option
+          th:value="frappeBlended"
+          th:selected="${menu.menuType.name()} == 'frappeBlended'"
+        >
+          프라페
+        </option>
+        <option th:value="food" th:selected="${menu.menuType.name()} == 'food'">
+          푸드
+        </option>
+      </select>
 
       <label>신메뉴</label>
-      <input type="text" name="isNewMenu" th:value="${menu.isNewMenu}" /><br />
-
-      <!--      <label>최종수정시간</label>-->
-      <!--      <input-->
-      <!--        type="text"-->
-      <!--        th:value="${#dates.format(menu.updatedAt, 'yyyy-MM-dd HH:mm:ss')}"-->
-      <!--        readonly-->
-      <!--      /><br />-->
+      <div class="radio-group">
+        <div>
+          <input
+            type="radio"
+            id="isNewMenuYes"
+            name="isNewMenu"
+            th:value="true"
+            th:checked="${menu.isNewMenu} == true"
+          />
+          <label for="isNewMenuYes">예</label>
+        </div>
+        <div>
+          <input
+            type="radio"
+            id="isNewMenuNo"
+            name="isNewMenu"
+            th:value="false"
+            th:checked="${menu.isNewMenu} == false"
+          />
+          <label for="isNewMenuNo">아니오</label>
+        </div>
+      </div>
 
       <div class="form-actions">
-        <button type="submit" style="background-color: cornflowerblue">
-          수정하기
-        </button>
+        <button type="submit">수정하기</button>
         <a th:href="@{/admin/menus}">
-          <button type="button" style="background-color: red">취소</button>
+          <button type="button" class="cancel-btn">취소</button>
         </a>
       </div>
     </form>

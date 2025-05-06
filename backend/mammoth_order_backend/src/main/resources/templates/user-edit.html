@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
   <head>
-    <title>상품 수정</title>
+    <title>회원 정보 수정</title>
     <style>
       body {
         font-family: "Arial", sans-serif;
@@ -121,30 +121,56 @@
     </style>
   </head>
   <body>
-    <h2>상품정보 수정</h2>
+    <h2>회원 정보 수정</h2>
     <form
-      th:action="@{'/admin/menus/update/' + ${menu.id}}"
+      th:action="@{'/admin/member/update/' + ${user.id}}"
       method="post"
       enctype="multipart/form-data"
     >
+      <label>이메일</label>
+      <input type="text" name="email" th:value="${user.email}" /><br />
+
       <label>이름</label>
-      <input type="text" name="name" th:value="${menu.name}" /><br />
+      <input type="text" name="name" th:value="${user.name}" /><br />
 
-      <label>이미지</label>
-      <img th:src="${menu.image}" width="50" />
-      <input type="text" name="image" th:value="${menu.image}" /><br />
+      <label>프로필 이미지</label>
+      <img th:src="${user.profileImage}" width="50" />
+      <input type="text" name="profileImage" th:value="${user.profileImage}" /><br />
 
-      <label>가격</label>
-      <input type="number" name="price" th:value="${menu.price}" /><br />
+      <label>카카오 아이디</label>
+      <input
+        type="text"
+        name="kakaoId"
+        th:value="${user.kakaoId}"
+        readonly
+      /><br />
 
-      <label>우유 유무</label>
-      <input type="text" name="hasMilk" th:value="${menu.hasMilk}" /><br />
+      <label>포인트</label>
+      <input type="number" name="point" th:value="${user.point}" /><br />
 
-      <label>카테고리</label>
-      <input type="text" name="menuType" th:value="${menu.menuType}" /><br />
+      <label>리프레시 토큰</label>
+      <input
+        type="text"
+        name="refreshToken"
+        th:value="${user.refreshToken}"
+        readonly
+      /><br />
 
-      <label>신메뉴</label>
-      <input type="text" name="isNewMenu" th:value="${menu.isNewMenu}" /><br />
+      <label>생성일</label>
+      <input
+        type="text"
+        name="createdAt"
+        th:value="${#temporals.format(user.createdAt, 'yyyy-MM-dd')}"
+        readonly
+      /><br />
+
+      <label>수정일</label>
+      <input
+        type="text"
+        name="updatedAt"
+        th:value="${#temporals.format(user.updatedAt, 'yyyy-MM-dd')}"
+        readonly
+      /><br />
 
       <!--      <label>최종수정시간</label>-->
       <!--      <input-->
@@ -157,7 +183,7 @@
         <button type="submit" style="background-color: cornflowerblue">
           수정하기
         </button>
-        <a th:href="@{/admin/menus}">
+        <a th:href="@{/admin/member}">
           <button type="button" style="background-color: red">취소</button>
         </a>
       </div>
