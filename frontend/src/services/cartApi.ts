@@ -34,3 +34,28 @@ export async function fetchCart(): Promise<CartInfo[]>{
   console.log("카트 가져오기 응답:", res.data);
   return res.data;
 }
+
+//장바구니 구매
+export async function purchaseToCart(cartIds : number[]): Promise<number> {
+  try {
+    const res = await axios.post(
+      `${API_BASE_URL}/order/cart/purchase`,
+      cartIds,
+      {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      }
+    );
+    console.log("구매하기 응답:", res.data);
+    return res.data.earnedPoint;
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error) && error.response) {
+      console.error("Purchase error details:", error.response.data);
+    } else {
+      console.error("Unexpected error:", error);
+    }
+    throw error;
+  }
+}

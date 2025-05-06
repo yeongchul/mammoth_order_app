@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
 import { CartInfo } from "../../types/common";
 import { fetchCart } from "../../services/cartApi";
-import { deleteToCart } from "../../services/cartApi";
 import mammothLogo from "../../assets/logo/mammoth_logo_notext.png";
+import { PurchaseCartBtn } from "../../components/Button/OrderBtn";
 
-export default function Cartlist(){
+export default function Purchaselist(){
     const [cart, setCart] = useState<CartInfo[]>([]);
     const totalprice : number = cart.reduce((sum, item) => sum + item.menuPrice, 0);
+    const cartIds : number[] = cart.map(item => item.id);
     const [storename, setStorename] = useState<string>("");
 
     const loadCart = async () => {
@@ -25,15 +26,6 @@ export default function Cartlist(){
             loadCart();
       },[])
 
-      const deletecart = async(cartId : number)=>{
-        try {
-              await deleteToCart(cartId);
-              alert("MY 카트에서 삭제되었습니다.");
-              loadCart();
-            } catch (error) {
-              alert("MY 매장 삭제 중 오류가 발생했습니다.");
-            }
-      }
       function cupTypeMapping(cupType:string){
         if(cupType == "personalCup"){
             return "개인컵 사용";
@@ -76,11 +68,6 @@ export default function Cartlist(){
                   </div>
                 <p>{storename}</p>
             </div>
-            <div className="flex bg-[#ECECEC] p-3.5 items-center mt-0.5">
-          <p className="text-sm text-gray-800">
-           장바구니에 담으신 상품은 최대 30일간 보관됩니다.
-          </p>
-          </div>
         {cart.map((cart, index)=>(
             <div key={index} className="p-2">
             {index!=0 && <div className="mt-2 w-full border-t-2 border-gray-200"></div>}
@@ -100,18 +87,12 @@ export default function Cartlist(){
                             {cart.milkType && <p>{milkTypeMapping(cart.milkType)}</p>}
                         </div>
                         }
+                        <div className="flex flex-row">
                         <p className="font-bold">{new Intl.NumberFormat("ko-KR").format(
             cart.menuPrice
           )}원</p>
-                    </div>
-                    <div className="flex flex-col justify-between items-end">
-                        <div role="button"
-                        className="flex items-center justify-center p-0.5 pl-2 pr-2 border-2 border-gray-300 text-gray-400 font-bold text-xs rounded-lg"
-                        onClick={()=>deletecart(cart.id)}
-                        >
-                        삭제
-                        </div>
-                        <p className="font-bold text-sm">{cart.menuQuantity}개</p>
+          <p className="text-xs">(수량: {cart.menuQuantity}개)</p>
+          </div>
                     </div>
                 </div>
             </div>
@@ -127,6 +108,9 @@ export default function Cartlist(){
           원
         </p>
       </div>
+      <div className="flex bg-white pt-5 pb-5 mt-0.5 justify-center">
+          <PurchaseCartBtn cartIds={cartIds}/>
+          </div>
       </>
       )
 }

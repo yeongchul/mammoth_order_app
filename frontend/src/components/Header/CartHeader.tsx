@@ -16,7 +16,7 @@ export default function CartHeader({ onClose }: IsClose) {
         </div>
       </div>
       <div className="navbar-center">
-        <p className="font-extrabold">메뉴상세</p>
+        <p className="font-extrabold">주문하기</p>
       </div>
       <div className="navbar-end">
       </div>

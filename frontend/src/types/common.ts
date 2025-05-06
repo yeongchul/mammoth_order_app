@@ -26,6 +26,12 @@ export interface CartInfo extends Cart{
   menuPrice: number;
 }
 
+export interface Order{
+  menuId: number;
+  menuQuantity: number;
+  size?: "s" | "m" | "l";
+}
+
 export interface OrderLog {
   beverage: string;
   price: number;

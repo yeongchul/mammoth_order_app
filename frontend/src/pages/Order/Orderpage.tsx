@@ -9,6 +9,7 @@ import { BeveragelistProps } from "../../types/common";
 import { useRef } from "react";
 import { AnimatePresence } from "framer-motion";
 import { fetchCafeName } from "../../services/storeApi";
+import mammothLogo from "../../assets/logo/mammoth_logo_notext.png";
 
 export default function Orderpage() {
   const tabRefs = useRef<(HTMLAnchorElement | null)[]>([]);
@@ -70,7 +71,16 @@ export default function Orderpage() {
       <div className="bg-[#ECECEC] h-[90%] overflow-y-auto">
         <div className="flex justify-between items-center bg-white p-2 mb-3">
           <div className="flex flex-row ml-2">
-            <p className="font-extrabold">{cafeName}</p>
+          <div className="flex relative justify-center items-center bg-[#5D4037] w-5 h-5 rounded-md p-0.5 mr-1">
+                <img
+                    src={mammothLogo}
+                    alt="글자없는매머드로고"
+                    style={{
+                      filter: "brightness(0) invert(1)",
+                    }}
+                  />
+                  </div>
+            <p className="font-bold">{cafeName}</p>
             <p>의 메뉴입니다.</p>
           </div>
           <div

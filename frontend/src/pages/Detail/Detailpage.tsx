@@ -70,10 +70,19 @@ export default function Detailpage({
             cupType: cupType,
             isIce: isIce,
             size: size,
-            milkType: milkoption,
           }
-        : prev // 또는 null 초기값이면 null 처리도 가능
+        : prev
     );
+    if(selectBeverage.hasMilk){
+      setAddCart(prev =>
+        prev
+          ? {
+              ...prev,
+              milkType : milkoption,
+            }
+          : prev
+      );
+    }
   }
   else{
     setAddCart(prev =>
@@ -82,7 +91,7 @@ export default function Detailpage({
             ...prev,
             menuQuantity: number,
           }
-        : prev // 또는 null 초기값이면 null 처리도 가능
+        : prev 
     );
   }
   }, [number, cupType, isIce, size, milkoption]);
@@ -121,7 +130,7 @@ export default function Detailpage({
                 ) && <Frappeoption setCupType={setCupType} setAddCart = {setAddCart} />}
                 <Sizeexplain />
                 {selectBeverage.hasMilk && <Milkoption
-                    setMilkOption={setMilkOption}
+                    setMilkOption={setMilkoption}
                     setAddCart={setAddCart}
                   />}
               </div>
@@ -181,8 +190,8 @@ export default function Detailpage({
                 </div>
 
                 <div className="flex flex-row justify-between items-center ">
-                  {addCart && <CartBtn onClose={onClose} addCart={addCart} />}
-                  <HalfOrderBtn />
+                  {addCart && <CartBtn onClose={onClose} addCart={addCart} setAddCart = {setAddCart}/>}
+                  {addCart && <HalfOrderBtn onClose={onClose} addCart={addCart} />}
                 </div>
               </div>
             </>

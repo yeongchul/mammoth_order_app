@@ -46,7 +46,7 @@ export default function Cafelist({ onClose }: IsClose) {
     <div className="flex flex-col">
       <div>
         <div className="flex justify-between bg-[#F4F4F4] p-3.5 items-center mt-0.5">
-          <p className="text-sm font-medium text-gray-600">
+          <p className="text-sm font-medium text-gray-800">
             내 위치로부터 반경 2km 이내의 매장입니다.
           </p>
           <svg
